@@ -2,7 +2,6 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    // img.load("particle.png");
 }
 
 //--------------------------------------------------------------
@@ -15,22 +14,7 @@ void ofApp::update(){
 void ofApp::draw(){
 	ofBackgroundGradient(ofColor::gray, ofColor::black, OF_GRADIENT_CIRCULAR);
 
-    camera.begin();
-
     ps.draw();
-
-    // ofPushView();
-    //     ofSetColor(255,128,64);
-    //     vec3 pos = vec3(0, 0, 0) - vec3(img.getWidth() / 2, img.getHeight() / 2, 0);
-    //     vec3 dir = normalize(pos - camera.getPosition());
-    //     img.draw(pos * dir);
-    // ofPopView();
-
-    if (debugMode) {
-        ofDrawGrid(5.0, 16, true, false, true, false);
-    }
-
-    camera.end();
 
     if (debugMode) {
         ofSetColor(0,255,0);
@@ -44,13 +28,13 @@ void ofApp::draw(){
             vec2(8, 32)
         );
 
-    //     // mouse coordinates
-    //     ofDrawBitmapStringHighlight(
-    //         to_string(ofGetMouseX()) + ", " + to_string(ofGetMouseY()),
-    //         vec2(ofGetMouseX(), ofGetMouseY()),
-    //         ofColor(0, 255, 0),
-    //         ofColor(0)
-    //     );
+        // mouse coordinates
+        ofDrawBitmapStringHighlight(
+            to_string(ofGetMouseX()) + ", " + to_string(ofGetMouseY()),
+            vec2(ofGetMouseX(), ofGetMouseY()),
+            ofColor(0, 255, 0),
+            ofColor(0)
+        );
     }
 }
 

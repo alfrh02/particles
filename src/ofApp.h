@@ -27,8 +27,5 @@ class ofApp : public ofBaseApp{
 		double deltaTime = 0;
 		bool debugMode = false;
 
-		ofEasyCam camera;
-
-		// ofImage img;
-		ParticleSystem ps = ParticleSystem(vec3(0, 0, 0), 8);
+		ParticleSystem ps = ParticleSystem(vec2(ofGetWidth() / 2, ofGetHeight() / 2), 8, 8);
 };

@@ -321,8 +321,9 @@ obj/linux64/Release/src/main.o: \
  /home/alfr/projects/code/cpp/openframeworks/libs/openFrameworks/3d/ofCamera.h \
  /home/alfr/projects/code/cpp/openframeworks/libs/openFrameworks/3d/ofEasyCam.h \
  /home/alfr/projects/code/cpp/particles/src/ofApp.h \
- /home/alfr/projects/code/cpp/particles/src/particleSystem/particleSystem.h \
- /home/alfr/projects/code/cpp/particles/src/particle/particle.h
+ /home/alfr/projects/code/cpp/particles/src/entity/particleSystem/particleSystem.h \
+ /home/alfr/projects/code/cpp/particles/src/entity/entity.h \
+ /home/alfr/projects/code/cpp/particles/src/entity/particle/particle.h
 /home/alfr/projects/code/cpp/openframeworks/libs/openFrameworks/ofMain.h:
 /home/alfr/projects/code/cpp/openframeworks/libs/openFrameworks/utils/ofConstants.h:
 /home/alfr/projects/code/cpp/openframeworks/libs/tess2/include/tesselator.h:
@@ -645,5 +646,6 @@ obj/linux64/Release/src/main.o: \
 /home/alfr/projects/code/cpp/openframeworks/libs/openFrameworks/3d/ofCamera.h:
 /home/alfr/projects/code/cpp/openframeworks/libs/openFrameworks/3d/ofEasyCam.h:
 /home/alfr/projects/code/cpp/particles/src/ofApp.h:
-/home/alfr/projects/code/cpp/particles/src/particleSystem/particleSystem.h:
-/home/alfr/projects/code/cpp/particles/src/particle/particle.h:
+/home/alfr/projects/code/cpp/particles/src/entity/particleSystem/particleSystem.h:
+/home/alfr/projects/code/cpp/particles/src/entity/entity.h:
+/home/alfr/projects/code/cpp/particles/src/entity/particle/particle.h:
