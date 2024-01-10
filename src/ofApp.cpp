@@ -89,14 +89,15 @@ void ofApp::mousePressed(int x, int y, int button){
             break;
         }
     }
-    if (editMode && (button == 2 || button == 0) && skipCature) {
+
+    if (editMode && (button == 2 || button == 0) && !skipCapture) {
         for (int i = 0; i < emitters.size(); i++) {
             if (distance(vec2(x, y), emitters[i]->getPosition()) < emitters[i]->getSize()) {
-                if (button == 2) {
+                if (button == 2) { // right click
                     delete emitters[i];
                     emitters.erase(emitters.begin() + i);
                     i--;
-                } else {
+                } else {           // left click
                     emitters[i]->setCaptured(true);
                 }
                 skipCapture = true;

@@ -15,6 +15,7 @@ const struct {
     // ofColor EMITTER = DARK_GRAY;
 
     // ofColor TEXT = DARK_GRAY;
+
     ofColor FOREGROUND = BLACK;
     ofColor BACKGROUND = WHITE;
 
