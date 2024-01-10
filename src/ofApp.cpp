@@ -2,6 +2,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    
 }
 
 //--------------------------------------------------------------
@@ -78,9 +79,17 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-    if (editMode && (button == 2 || button == 0)) {
-        bool captured = false;
+    bool skipCapture = false;
 
+    // uncapture any captured
+    for (Emitter* e : emitters) {
+        if (e->getCaptured()) {
+            e->setCaptured(false);
+            skipCapture = true;
+            break;
+        }
+    }
+    if (editMode && (button == 2 || button == 0) && skipCature) {
         for (int i = 0; i < emitters.size(); i++) {
             if (distance(vec2(x, y), emitters[i]->getPosition()) < emitters[i]->getSize()) {
                 if (button == 2) {
@@ -90,12 +99,12 @@ void ofApp::mousePressed(int x, int y, int button){
                 } else {
                     emitters[i]->setCaptured(true);
                 }
-                captured = true;
+                skipCapture = true;
                 break;
             }
         }
 
-        if (!captured) {
+        if (!skipCapture) {
             emitters.push_back(new Emitter(vec2(x, y), 0.25, -1));
         }
     }

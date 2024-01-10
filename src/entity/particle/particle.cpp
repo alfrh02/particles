@@ -1,6 +1,6 @@
 #include "particle.h"
 
-Particle::Particle(vec2 pos, vec2 dir, float size, float speed, float lifespan, ofColor col)
+Particle::Particle(vec2 pos, vec2 dir, float size, float speed, unsigned short lifespan, ofColor col)
 : Entity(pos, size) {
     _speed = speed;
     _direction = dir;
@@ -17,8 +17,6 @@ void Particle::update(double deltaTime) {
     _position += _speed * _direction;
     _boundingBox.setPosition(_position.x - _size/2, _position.y - _size/2);
     _lifetime += ofGetLastFrameTime();
-
-    _color.a = 255 - (_lifetime / _lifespan * 255);
 }
 
 void Particle::draw() {

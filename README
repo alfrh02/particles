@@ -2,14 +2,24 @@
 
 ### Todo
 
-- [ ] More Particle parameters to be passed into Emitter - including being inputted as ranges
-    - [ ] Color
-    - [ ] Size
-    - [ ] Velocity
+~~- [ ] More Particle parameters to be passed into Emitter - including being inputted as ranges~~
+    ~~- [ ] Color~~
+    ~~- [ ] Size~~
+    ~~- [ ] Velocity~~
+- [ ] Particle types
+    - [ ] Smoke
+    - [ ] Fire
+    - [ ] Smoke & Fire
+    - [ ] Rain
+    - [ ] Galaxy
+    - [ ] Boids
 - [ ] Particle behaviour that uses Emitter parameters, i.e. gravity (orbiting around the Emitter);
-- [ ] GUI elements that allow user to control Emitter parameters seamlessly
 - [ ] 2D objects for particles to interact with
     - [ ] Objects that are:
         - [ ] Placeable
         - [ ] Rotatable
     - [ ] Collision detection
+- [ ] Additional Emitter behaviour
+    - [ ] GUI Elements
+    - [ ] Spawn area
+        - [ ] Emitter turns into a rectangle, where user can specify width/height, Particle objects will spawn randomly within that rectangle

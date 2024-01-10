@@ -1,0 +1,10 @@
+obj/
+bin/spaceship
+obj/linux64/Release/.compiler_flags
+obj/linux64/Release/src/main.d
+obj/linux64/Release/src/main.o
+obj/linux64/Release/src/ofApp.d
+obj/linux64/Release/src/ofApp.o
+obj/linux64/Release/src/colonyShip/colonyShip.d
+obj/linux64/Release/src/colonyShip/colonyShip.o
+obj/linux64/Release/src/player/player.o
