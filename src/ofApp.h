@@ -27,7 +27,6 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 		double deltaTime = 0;
-		bool debugMode = false;
 		bool editMode = false;
 
 		vector<Emitter*> emitters;

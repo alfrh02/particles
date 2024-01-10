@@ -21,45 +21,37 @@ void ofApp::draw(){
 
         for (Emitter* e : emitters) {
             e->draw();
-            if (editMode || debugMode) {
+            if (editMode) {
                 e->drawEditMode();
             }
         }
 
     ofPopView();
 
-    string str = "Edit Mode: ";
-    if (editMode) {
-        ofSetColor(COLORS.FOREGROUND);
-        str += "ON";
-    } else {
-        ofSetColor(COLORS.TEXT);
-        str += "OFF";
-    }
-    ofDrawBitmapString(str, vec2(8, 16));
-
-    ofSetColor(COLORS.TEXT);
-    stringstream s;
-
-    s << to_string(ofGetFrameRate()) << " fps" << endl;
-    s << to_string(deltaTime) << " seconds" << endl;
-
     unsigned int particleNum = 0;
     for (Emitter* e : emitters) {
         particleNum += e->getParticleAmount();
     }
 
+    stringstream s;
+
+    if (editMode) {
+        s << "Edit Mode: ON" << endl;
+    } else {
+        s << "Edit Mode: OFF" << endl;
+    }
+
+    s << to_string(ofGetFrameRate()) << " fps" << endl;
+    s << to_string(deltaTime) << " seconds" << endl;
     s << to_string(particleNum) << " particles" << endl;
 
-    ofDrawBitmapString(s.str().c_str(), vec2(8, 32));
+    ofSetColor(COLORS.TEXT);
+    ofDrawBitmapString(s.str().c_str(), vec2(8, 16));
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     switch (key) {
-        case '`':
-            debugMode = !debugMode;
-            break;
         case 'f':
             ofToggleFullscreen();
             break;

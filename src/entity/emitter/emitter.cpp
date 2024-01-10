@@ -21,7 +21,7 @@ void Emitter::update(double deltaTime) {
     if (_timeSinceLastSpawn >= _spawnInterval && particles.size() + 1 <= _maxParticles) {
         _timeSinceLastSpawn = 0;
 
-        Particle* p = new Particle(_position, vec2(sin(deltaTime), cos(deltaTime)) / 10, 1, 4, 20);
+        Particle* p = new Particle(_position, vec2(sin(deltaTime), cos(deltaTime)) / 10, 1, 4, -1, COLORS.FOREGROUND);
         particles.push_back(p);
     }
 

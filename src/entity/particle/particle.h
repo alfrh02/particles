@@ -4,7 +4,7 @@
 
 class Particle : public Entity {
     public:
-        Particle(vec2 pos, vec2 dir, float size, float speed, float lifespan);
+        Particle(vec2 pos, vec2 dir, float size, float speed, float lifespan, ofColor col);
 
         void update(double deltaTime) override;
         void draw() override;
@@ -16,4 +16,8 @@ class Particle : public Entity {
 
         float _lifetime;
         float _lifespan;
+
+        ofColor _color;
+
+        float _alpha;
 };

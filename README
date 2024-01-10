@@ -8,3 +8,8 @@
     - [ ] Velocity
 - [ ] Particle behaviour that uses Emitter parameters, i.e. gravity (orbiting around the Emitter);
 - [ ] GUI elements that allow user to control Emitter parameters seamlessly
+- [ ] 2D objects for particles to interact with
+    - [ ] Objects that are:
+        - [ ] Placeable
+        - [ ] Rotatable
+    - [ ] Collision detection
