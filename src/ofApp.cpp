@@ -7,46 +7,57 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     deltaTime += ofGetLastFrameTime();
-    ps.update(deltaTime);
-}
 
-//--------------------------------------------------------------
-void ofApp::draw(){
-	ofBackgroundGradient(ofColor::gray, ofColor::black, OF_GRADIENT_CIRCULAR);
-
-    ps.draw();
-
-    if (debugMode) {
-        ofSetColor(0,255,0);
-        ofDrawBitmapString(
-            "            fps | " + to_string(ofGetFrameRate()),
-            vec2(8, 16)
-        );
-
-        ofDrawBitmapString(
-            "   time elapsed | " + to_string(deltaTime),
-            vec2(8, 32)
-        );
-
-        // mouse coordinates
-        ofDrawBitmapStringHighlight(
-            to_string(ofGetMouseX()) + ", " + to_string(ofGetMouseY()),
-            vec2(ofGetMouseX(), ofGetMouseY()),
-            ofColor(0, 255, 0),
-            ofColor(0)
-        );
+    for (Emitter* e : emitters) {
+        e->update(deltaTime);
     }
 }
 
 //--------------------------------------------------------------
+void ofApp::draw(){
+    ofBackground(COLORS.BACKGROUND);
+
+    ofPushView();
+
+        for (Emitter* e : emitters) {
+            e->draw();
+            if (editMode || debugMode) {
+                e->drawEditMode();
+            }
+        }
+
+    ofPopView();
+
+    string str = "Edit Mode: ";
+    if (editMode) {
+        ofSetColor(COLORS.FOREGROUND);
+        str += "ON";
+    } else {
+        ofSetColor(COLORS.TEXT);
+        str += "OFF";
+    }
+    ofDrawBitmapString(str, vec2(8, 16));
+
+    ofSetColor(COLORS.TEXT);
+    stringstream s;
+
+    s << to_string(ofGetFrameRate()) << " fps" << endl;
+    s << to_string(deltaTime) << " seconds" << endl;
+
+    ofDrawBitmapString(s.str().c_str(), vec2(8, 32));
+}
+
+//--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    cout << key << endl;
     switch (key) {
         case '`':
             debugMode = !debugMode;
             break;
         case 'f':
             ofToggleFullscreen();
+            break;
+        case 'e':
+            editMode = !editMode;
             break;
     }
 }
@@ -68,12 +79,37 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
+    if (editMode && (button == 2 || button == 0)) {
+        bool captured = false;
 
+        for (int i = 0; i < emitters.size(); i++) {
+            if (distance(vec2(x, y), emitters[i]->getPosition()) < emitters[i]->getSize()) {
+                if (button == 2) {
+                    delete emitters[i];
+                    emitters.erase(emitters.begin() + i);
+                    i--;
+                } else {
+                    emitters[i]->setCaptured(true);
+                }
+                captured = true;
+                break;
+            }
+        }
+
+        if (!captured) {
+            emitters.push_back(new Emitter(vec2(x, y), 0.25, -1));
+        }
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-
+    for (Emitter* e : emitters) {
+        if (e->getCaptured()) {
+            e->setCaptured(false);
+            break;
+        }
+    }
 }
 
 //--------------------------------------------------------------
@@ -83,6 +119,11 @@ void ofApp::mouseEntered(int x, int y){
 
 //--------------------------------------------------------------
 void ofApp::mouseExited(int x, int y){
+
+}
+
+//--------------------------------------------------------------
+void ofApp::mouseScrolled(int x, int y, float scrollX, float scrollY) {
 
 }
 

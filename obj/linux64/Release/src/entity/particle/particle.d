@@ -321,7 +321,8 @@ obj/linux64/Release/src/entity/particle/particle.o: \
  /home/alfr/projects/code/cpp/openframeworks/libs/openFrameworks/video/ofVideoPlayer.h \
  /home/alfr/projects/code/cpp/openframeworks/libs/openFrameworks/3d/of3dUtils.h \
  /home/alfr/projects/code/cpp/openframeworks/libs/openFrameworks/3d/ofCamera.h \
- /home/alfr/projects/code/cpp/openframeworks/libs/openFrameworks/3d/ofEasyCam.h
+ /home/alfr/projects/code/cpp/openframeworks/libs/openFrameworks/3d/ofEasyCam.h \
+ /home/alfr/projects/code/cpp/particles/src/colors.h
 /home/alfr/projects/code/cpp/particles/src/entity/particle/particle.h:
 /home/alfr/projects/code/cpp/particles/src/entity/entity.h:
 /home/alfr/projects/code/cpp/openframeworks/libs/openFrameworks/ofMain.h:
@@ -645,3 +646,4 @@ obj/linux64/Release/src/entity/particle/particle.o: \
 /home/alfr/projects/code/cpp/openframeworks/libs/openFrameworks/3d/of3dUtils.h:
 /home/alfr/projects/code/cpp/openframeworks/libs/openFrameworks/3d/ofCamera.h:
 /home/alfr/projects/code/cpp/openframeworks/libs/openFrameworks/3d/ofEasyCam.h:
+/home/alfr/projects/code/cpp/particles/src/colors.h:

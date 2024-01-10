@@ -16,13 +16,25 @@ void Entity::update(double deltaTime) {
 }
 
 void Entity::draw() {
-    
+
 }
 
-void Entity::drawDebug() {
-    ofSetColor(255, 32, 32);
+void Entity::drawEditMode() {
+    ofSetColor(COLORS.RED);
     ofDrawRectangle(_boundingBox);
 
-    ofSetColor(0, 255, 0);
+    ofSetColor(COLORS.GREEN);
     ofDrawLine(_position, _position + (_direction * _size));
+}
+
+vec2 Entity::getPosition() {
+    return _position;
+}
+
+float Entity::getSize() {
+    return _size;
+}
+
+ofRectangle Entity::getBoundingBox() {
+    return _boundingBox;
 }

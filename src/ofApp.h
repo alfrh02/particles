@@ -1,7 +1,8 @@
 #pragma once
 
+#include <vector>
 #include "ofMain.h"
-#include "particleSystem.h"
+#include "emitter.h"
 
 using namespace glm;
 
@@ -20,12 +21,14 @@ class ofApp : public ofBaseApp{
 		void mouseReleased(int x, int y, int button);
 		void mouseEntered(int x, int y);
 		void mouseExited(int x, int y);
+		void mouseScrolled(int x, int y, float scrollX, float scrollY);
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
 		double deltaTime = 0;
 		bool debugMode = false;
+		bool editMode = false;
 
-		ParticleSystem ps = ParticleSystem(vec2(ofGetWidth() / 2, ofGetHeight() / 2), 8, 8);
+		vector<Emitter*> emitters;
 };

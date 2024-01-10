@@ -4,14 +4,16 @@
 
 class Particle : public Entity {
     public:
-        Particle(vec2 pos, float size, float lifespan);
+        Particle(vec2 pos, vec2 dir, float size, float speed, float lifespan);
 
         void update(double deltaTime) override;
         void draw() override;
 
-        bool isDead(double deltaTime);
+        bool getIsDead();
 
     private:
-        float _lifetime = 0;
+        vec2 _direction;
+
+        float _lifetime;
         float _lifespan;
 };
