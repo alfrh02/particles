@@ -1,0 +1,10 @@
+# 2D Particle System
+
+### Todo
+
+- [ ] More Particle parameters to be passed into Emitter - including being inputted as ranges
+    - [ ] Color
+    - [ ] Size
+    - [ ] Velocity
+- [ ] Particle behaviour that uses Emitter parameters, i.e. gravity (orbiting around the Emitter);
+- [ ] GUI elements that allow user to control Emitter parameters seamlessly
