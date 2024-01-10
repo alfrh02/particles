@@ -16,6 +16,7 @@ class Emitter : public Entity {
         void setCaptured(bool captured);
 
         bool getCaptured();
+        unsigned int getParticleAmount();
 
     private:
         float _spawnInterval;

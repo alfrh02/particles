@@ -44,6 +44,13 @@ void ofApp::draw(){
     s << to_string(ofGetFrameRate()) << " fps" << endl;
     s << to_string(deltaTime) << " seconds" << endl;
 
+    unsigned int particleNum = 0;
+    for (Emitter* e : emitters) {
+        particleNum += e->getParticleAmount();
+    }
+
+    s << to_string(particleNum) << " particles" << endl;
+
     ofDrawBitmapString(s.str().c_str(), vec2(8, 32));
 }
 

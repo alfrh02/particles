@@ -54,6 +54,9 @@ void Emitter::drawEditMode() {
 
     ofDrawCircle(_position, _size);
 
+    ofSetColor(COLORS.BACKGROUND);
+    ofDrawCircle(_position, _size-1);
+
     for (Particle* p : particles) {
         p->drawEditMode();
     }
@@ -65,4 +68,8 @@ void Emitter::setCaptured(bool captured) {
 
 bool Emitter::getCaptured() {
     return _captured;
+}
+
+unsigned int Emitter::getParticleAmount() {
+    return particles.size();
 }

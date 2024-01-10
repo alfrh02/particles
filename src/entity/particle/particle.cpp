@@ -23,5 +23,8 @@ void Particle::draw() {
 }
 
 bool Particle::getIsDead() {
+    if ((_position.x > ofGetWidth() || _position.x < 0) || (_position.y > ofGetHeight() || _position.y < 0)) {
+        return true;
+    }
     return _lifetime > _lifespan;
 }
