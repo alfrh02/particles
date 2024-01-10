@@ -13,7 +13,7 @@
     - [ ] Rain
     - [ ] Galaxy
     - [ ] Boids
-- [ ] Particle behaviour that uses Emitter parameters, i.e. gravity (orbiting around the Emitter);
+    - [ ] Gravity Particles?
 - [ ] 2D objects for particles to interact with
     - [ ] Objects that are:
         - [ ] Placeable
