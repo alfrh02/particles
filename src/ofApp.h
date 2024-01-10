@@ -30,4 +30,5 @@ class ofApp : public ofBaseApp{
 		bool editMode = false;
 
 		vector<Emitter*> emitters;
+		vector<Particle*> particles;
 };

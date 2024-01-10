@@ -2,7 +2,6 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    
 }
 
 //--------------------------------------------------------------
@@ -11,6 +10,23 @@ void ofApp::update(){
 
     for (Emitter* e : emitters) {
         e->update(deltaTime);
+
+        if (e->canSpawn()) {
+            Particle* p = new Particle(e->getPosition(), vec2(sin(deltaTime), cos(deltaTime)) / 10, 1, 4, -1, COLORS.FOREGROUND);
+            particles.push_back(p);
+
+            e->addParticle(1);
+        }
+    }
+
+    for (int i = 0; i < particles.size(); i++) {
+        particles[i]->update(deltaTime);
+
+        if (particles[i]->getIsDead()) {
+            delete particles[i];
+            particles.erase(particles.begin() + i);
+            i--;
+        }
     }
 }
 
@@ -20,19 +36,20 @@ void ofApp::draw(){
 
     ofPushView();
 
-        for (Emitter* e : emitters) {
-            e->draw();
-            if (editMode) {
+        if (editMode) {
+            for (Emitter* e : emitters) {
                 e->drawEditMode();
             }
         }
 
-    ofPopView();
+        for (Particle* p : particles) {
+            p->draw();
+            if (editMode) {
+                p->drawEditMode();
+            }
+        }
 
-    unsigned int particleNum = 0;
-    for (Emitter* e : emitters) {
-        particleNum += e->getParticleAmount();
-    }
+    ofPopView();
 
     stringstream s;
 
@@ -44,7 +61,7 @@ void ofApp::draw(){
 
     s << to_string(ofGetFrameRate()) << " fps" << endl;
     s << to_string(deltaTime) << " seconds" << endl;
-    s << to_string(particleNum) << " particles" << endl;
+    s << to_string(particles.size()) << " particles" << endl;
 
     ofSetColor(COLORS.TEXT);
     ofDrawBitmapString(s.str().c_str(), vec2(8, 16));
