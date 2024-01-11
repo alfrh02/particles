@@ -3,6 +3,8 @@
 #include <vector>
 #include "ofMain.h"
 #include "emitter.h"
+#include "sceneObject.h"
+#include "box.h"
 
 using namespace glm;
 
@@ -28,7 +30,9 @@ class ofApp : public ofBaseApp{
 
 		double deltaTime = 0;
 		bool editMode = false;
+		bool mouseCaptured = false;
 
 		vector<Emitter*> emitters;
 		vector<Particle*> particles;
+		vector<SceneObject*> sceneObjects;
 };

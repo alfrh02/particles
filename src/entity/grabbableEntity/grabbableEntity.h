@@ -4,7 +4,7 @@
 
 class GrabbableEntity : public Entity {
     public:
-        GrabbableEntity(vec2 pos, float size);
+        GrabbableEntity(vec2 pos, float size, ofColor col);
 
         void setCaptured(bool captured);
         bool getCaptured();

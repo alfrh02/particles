@@ -16,8 +16,4 @@ class Particle : public Entity {
 
         float _lifetime;
         unsigned short _lifespan; // we keep this as an unsigned short so that we can pass -1 as an argument to mean practically infinite
-
-        ofColor _color;
-
-        float _alpha;
 };

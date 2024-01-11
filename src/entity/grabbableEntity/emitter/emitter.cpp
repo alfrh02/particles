@@ -1,7 +1,7 @@
 #include "emitter.h"
 
-Emitter::Emitter(vec2 pos, float spawnInterval, unsigned short maxParticles)
-: GrabbableEntity(pos, 8){
+Emitter::Emitter(vec2 pos, ofColor col, float spawnInterval, unsigned short maxParticles)
+: GrabbableEntity(pos, 8, col){
     _spawnInterval = spawnInterval;
     _maxParticles = maxParticles;
 
@@ -18,7 +18,7 @@ void Emitter::update(double deltaTime) {
 }
 
 void Emitter::drawEditMode() {
-    ofSetColor(COLORS.EMITTER);
+    ofSetColor(_color);
     if (_captured) {
         ofSetColor(COLORS.RED);
     }

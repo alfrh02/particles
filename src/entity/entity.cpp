@@ -1,11 +1,13 @@
 #include "entity.h"
 
-Entity::Entity(vec2 pos, float size) {
+Entity::Entity(vec2 pos, float size, ofColor col) {
     _position = pos;
     _size = size;
 
     _rotation = 0;
     _direction = vec2(0, 0);
+
+    _color = col;
 
     _boundingBox = ofRectangle(_position - _size/2, _size, _size);
 }
@@ -20,11 +22,13 @@ void Entity::draw() {
 }
 
 void Entity::drawEditMode() {
-    ofSetColor(COLORS.RED);
-    ofDrawRectangle(_boundingBox);
+    ofNoFill();
+        ofSetColor(COLORS.RED);
+        ofDrawRectangle(_boundingBox);
 
-    ofSetColor(COLORS.GREEN);
-    ofDrawLine(_position, _position + (_direction * _size));
+        ofSetColor(COLORS.GREEN);
+        ofDrawLine(_position, _position + (_direction * _size));
+    ofFill();
 }
 
 vec2 Entity::getPosition() {

@@ -1,14 +1,12 @@
 #include "particle.h"
 
 Particle::Particle(vec2 pos, vec2 dir, float size, float speed, unsigned short lifespan, ofColor col)
-: Entity(pos, size) {
+: Entity(pos, size, col) {
     _speed = speed;
     _direction = dir;
 
     _lifetime = 0;
     _lifespan = lifespan;
-
-    _color = col;
 
     cout << "created new particle" << endl;
 }

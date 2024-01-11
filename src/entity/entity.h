@@ -7,7 +7,7 @@ using namespace glm;
 
 class Entity {
     public:
-        Entity(vec2 pos, float size);
+        Entity(vec2 pos = vec2(0, 0), float size = 0, ofColor col = COLORS.FOREGROUND);
 
         virtual void update(double deltaTime);
         virtual void draw();
@@ -23,6 +23,8 @@ class Entity {
         float _rotation;
         float _size;
         float _speed;
+
+        ofColor _color;
 
         ofRectangle _boundingBox;
 };

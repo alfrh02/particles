@@ -1,7 +1,7 @@
 #include "grabbableEntity.h"
 
-GrabbableEntity::GrabbableEntity(vec2 pos, float size)
-: Entity(pos, size) {
+GrabbableEntity::GrabbableEntity(vec2 pos, float size, ofColor col)
+: Entity(pos, size, col) {
     _captured = false;
 }
 

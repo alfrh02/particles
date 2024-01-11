@@ -6,7 +6,7 @@
 
 class Emitter : public GrabbableEntity {
     public:
-        Emitter(vec2 pos, float spawnInterval, unsigned short maxParticles);
+        Emitter(vec2 pos, ofColor col, float spawnInterval, unsigned short maxParticles);
 
         void update(double deltaTime) override;
         void drawEditMode() override;
