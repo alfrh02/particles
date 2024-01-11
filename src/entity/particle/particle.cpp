@@ -7,8 +7,6 @@ Particle::Particle(vec2 pos, vec2 dir, float size, float speed, unsigned short l
 
     _lifetime = 0;
     _lifespan = lifespan;
-
-    cout << "created new particle" << endl;
 }
 
 void Particle::update(double deltaTime) {
@@ -19,6 +17,13 @@ void Particle::update(double deltaTime) {
 void Particle::draw() {
     ofSetColor(_color);
     ofDrawCircle(_position, _size);
+}
+
+void Particle::onCollision(ofRectangle boundingBox) {
+    // find direction to the centre of the bounding box
+    vec2 dir = normalize(_position - (boundingBox.getPosition() + vec2(boundingBox.getWidth(), boundingBox.getHeight()) / 2));
+    cout << dir.x << " , " << dir.y << endl;
+    _direction = dir;
 }
 
 bool Particle::getIsDead() {

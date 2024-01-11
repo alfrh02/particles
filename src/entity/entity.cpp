@@ -21,7 +21,7 @@ void Entity::draw() {
 void Entity::drawEditMode() {
     ofNoFill();
         ofSetColor(COLORS.GREEN);
-        ofDrawLine(_position, _position + (_direction * _size));
+        ofDrawLine(_position, _position + (_direction * 10));
     ofFill();
 }
 

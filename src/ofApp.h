@@ -29,7 +29,10 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 		double deltaTime = 0;
-		bool editMode = false;
+
+		enum Mode { view, emitter, box };
+		Mode mode = view;
+
 		bool mouseCaptured = false;
 
 		vector<Emitter*> emitters;

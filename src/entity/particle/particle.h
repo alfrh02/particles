@@ -9,6 +9,8 @@ class Particle : public Entity {
         void update(double deltaTime) override;
         void draw() override;
 
+        void onCollision(ofRectangle boundingBox);
+
         bool getIsDead();
 
     private:

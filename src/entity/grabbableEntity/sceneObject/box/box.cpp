@@ -19,7 +19,7 @@ void Box::update(double deltaTime) {
     }
 
     if (_captured && !_editing) {
-        _position = vec2(ofGetMouseX(), ofGetMouseY());
+        _position = vec2(ofGetMouseX(), ofGetMouseY()) - vec2(_width, _height) / 2;
 
         _rect.setPosition(_position.x, _position.y);
         _boundingBox.setPosition(_position.x, _position.y);

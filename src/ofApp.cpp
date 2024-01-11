@@ -8,19 +8,28 @@ void ofApp::setup(){
 void ofApp::update(){
     deltaTime += ofGetLastFrameTime();
 
+    // -------- update emitters
     for (Emitter* e : emitters) {
         e->update(deltaTime);
 
         if (e->canSpawn()) {
-            Particle* p = new Particle(e->getPosition(), vec2(sin(deltaTime), cos(deltaTime)) / 10, 1, 4, -1, COLORS.FOREGROUND);
+            Particle* p = new Particle(e->getPosition(), vec2(sin(deltaTime), cos(deltaTime)), 1, 0.1, -1, COLORS.FOREGROUND);
             particles.push_back(p);
 
             e->addParticle(1);
         }
     }
 
+    // -------- update particles
     for (int i = 0; i < particles.size(); i++) {
         particles[i]->update(deltaTime);
+
+        vec2 ppos = particles[i]->getPosition();
+        for (SceneObject* o : sceneObjects) {
+            if (o->getBoundingBox().inside(ppos.x, ppos.y)) {
+                particles[i]->onCollision(o->getBoundingBox());
+            }
+        }
 
         if (particles[i]->getIsDead()) {
             delete particles[i];
@@ -29,6 +38,7 @@ void ofApp::update(){
         }
     }
 
+    // -------- update sceneObjects
     for (SceneObject* o : sceneObjects) {
         o->update(deltaTime);
     }
@@ -40,7 +50,7 @@ void ofApp::draw(){
 
     ofPushView();
 
-        if (editMode) {
+        if (mode != view) {
             for (Emitter* e : emitters) {
                 e->drawEditMode();
             }
@@ -48,14 +58,14 @@ void ofApp::draw(){
 
         for (Particle* p : particles) {
             p->draw();
-            if (editMode) {
+            if (mode != view) {
                 p->drawEditMode();
             }
         }
 
         for (SceneObject* o : sceneObjects) {
             o->draw();
-            if (editMode) {
+            if (mode != view) {
                 o->drawEditMode();
             }
         }
@@ -64,15 +74,23 @@ void ofApp::draw(){
 
     stringstream s;
 
-    if (editMode) {
-        s << "Edit Mode: ON" << endl;
-    } else {
-        s << "Edit Mode: OFF" << endl;
-    }
-
     s << to_string(ofGetFrameRate()) << " fps" << endl;
     s << to_string(deltaTime) << " seconds" << endl;
     s << to_string(particles.size()) << " particles" << endl;
+    s << to_string(ofGetMouseX()) << ", " << to_string(ofGetMouseY()) << endl;
+    s << "\nCurrent Mode: ";
+
+    switch (mode) {
+        case view:
+            s << "View" << endl;
+            break;
+        case emitter:
+            s << "Placing Emitter" << endl;
+            break;
+        case box:
+            s << "Placing Box" << endl;
+            break;
+    }
 
     ofSetColor(COLORS.TEXT);
     ofDrawBitmapString(s.str().c_str(), vec2(8, 16));
@@ -84,8 +102,14 @@ void ofApp::keyPressed(int key){
         case 'f':
             ofToggleFullscreen();
             break;
-        case 'e':
-            editMode = !editMode;
+        case '1':
+            mode = view;
+            break;
+        case '2':
+            mode = emitter;
+            break;
+        case '3':
+            mode = box;
             break;
     }
 }
@@ -116,8 +140,7 @@ void ofApp::mousePressed(int x, int y, int button){
         }
     }
 
-    if (editMode && (button == 2 || button == 0) && !mouseCaptured) {
-
+    if (mode == emitter && (button == 2 || button == 0) && !mouseCaptured) {
         for (int i = 0; i < emitters.size(); i++) {
             if (distance(vec2(x, y), emitters[i]->getPosition()) < emitters[i]->getSize()) {
                 if (button == 2) { // right click, delete
@@ -147,7 +170,7 @@ void ofApp::mousePressed(int x, int y, int button){
         }
 
         emitters.push_back(new Emitter(vec2(x, y), COLORS.FOREGROUND, 0.25, -1));
-    } else if (button == 0 && !mouseCaptured) {
+    } else if (mode == box && button == 0 && !mouseCaptured) {
         sceneObjects.push_back(new Box(vec2(x, y), 8, 8, COLORS.FOREGROUND));
         mouseCaptured = true;
     }
@@ -158,6 +181,14 @@ void ofApp::mouseReleased(int x, int y, int button){
     for (Emitter* e : emitters) {
         if (e->getCaptured()) {
             e->setCaptured(false);
+            mouseCaptured = false;
+            break;
+        }
+    }
+
+    for (SceneObject* o : sceneObjects) {
+        if (o->getCaptured()) {
+            o->setCaptured(false);
             mouseCaptured = false;
             break;
         }
