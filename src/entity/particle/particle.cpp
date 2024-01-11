@@ -13,7 +13,6 @@ Particle::Particle(vec2 pos, vec2 dir, float size, float speed, unsigned short l
 
 void Particle::update(double deltaTime) {
     _position += _speed * _direction;
-    _boundingBox.setPosition(_position.x - _size/2, _position.y - _size/2);
     _lifetime += ofGetLastFrameTime();
 }
 

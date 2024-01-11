@@ -15,7 +15,6 @@ class Entity {
 
         vec2 getPosition();
         float getSize();
-        ofRectangle getBoundingBox();
 
     protected:
         vec2 _position;
@@ -25,6 +24,4 @@ class Entity {
         float _speed;
 
         ofColor _color;
-
-        ofRectangle _boundingBox;
 };

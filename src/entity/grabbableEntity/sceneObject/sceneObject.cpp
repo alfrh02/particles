@@ -15,3 +15,17 @@ void SceneObject::update(double deltaTime) {
         _position = vec2(ofGetMouseX(), ofGetMouseY());
     }
 }
+
+void SceneObject::drawEditMode() {
+    ofNoFill();
+        ofSetColor(COLORS.RED);
+        ofDrawRectangle(_boundingBox);
+
+        ofSetColor(COLORS.GREEN);
+        ofDrawLine(_position, _position + (_direction * _size));
+    ofFill();
+}
+
+ofRectangle SceneObject::getBoundingBox() {
+    return _boundingBox;
+}
