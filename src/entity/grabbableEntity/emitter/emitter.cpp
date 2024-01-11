@@ -3,6 +3,7 @@
 Emitter::Emitter(vec2 pos, ofColor col, float spawnInterval, unsigned short maxParticles)
 : GrabbableEntity(pos, 8, col){
     _spawnInterval = spawnInterval;
+    _particleNum = 0;
     _maxParticles = maxParticles;
 
     _captured = false;
