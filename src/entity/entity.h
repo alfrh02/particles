@@ -13,6 +13,9 @@ class Entity {
         virtual void draw();
         virtual void drawEditMode();
 
+        void setCaptured(bool captured = false, int x = 0, int y = 0);
+
+        bool getCaptured();
         vec2 getPosition();
         float getSize();
 
@@ -24,4 +27,7 @@ class Entity {
         float _speed;
 
         ofColor _color;
+
+        bool _captured;
+        vec2 _mouseCoordinates;
 };

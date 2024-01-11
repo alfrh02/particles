@@ -3,7 +3,6 @@
 #include <vector>
 #include "ofMain.h"
 #include "emitter.h"
-#include "sceneObject.h"
 #include "box.h"
 
 using namespace glm;
@@ -39,5 +38,5 @@ class ofApp : public ofBaseApp{
 
 		vector<Emitter*> emitters;
 		vector<Particle*> particles;
-		vector<SceneObject*> sceneObjects;
+		vector<Box*> boxes;
 };

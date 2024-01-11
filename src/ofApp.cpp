@@ -10,7 +10,7 @@ ofApp::~ofApp(){
         delete p;
     }
 
-    for (SceneObject* o : sceneObjects) {
+    for (Box* o : boxes) {
         delete o;
     }
 }
@@ -40,7 +40,7 @@ void ofApp::update(){
         particles[i]->update(deltaTime);
 
         vec2 ppos = particles[i]->getPosition();
-        for (SceneObject* o : sceneObjects) {
+        for (Box* o : boxes) {
             if (o->getBoundingBox().inside(ppos.x, ppos.y)) {
                 particles[i]->onCollision(o->getBoundingBox());
             }
@@ -53,8 +53,8 @@ void ofApp::update(){
         }
     }
 
-    // -------- update sceneObjects
-    for (SceneObject* o : sceneObjects) {
+    // -------- update boxes
+    for (Box* o : boxes) {
         o->update(deltaTime);
     }
 }
@@ -78,7 +78,7 @@ void ofApp::draw(){
             }
         }
 
-        for (SceneObject* o : sceneObjects) {
+        for (Box* o : boxes) {
             o->draw();
             if (mode != view) {
                 o->drawEditMode();
@@ -151,7 +151,7 @@ void ofApp::mousePressed(int x, int y, int button){
 
     // when we are editing a box's width and height, we need to left click to stop editing
     // we return the function prematurely to stop more behaviour from being calculated
-    for (SceneObject* o : sceneObjects) {
+    for (Box* o : boxes) {
         if (o->getCaptured()) {
             o->setCaptured(false);
             mouseCaptured = false;
@@ -185,22 +185,22 @@ void ofApp::mousePressed(int x, int y, int button){
                 }
                 break;
             case box:
-                for (int i = 0; i < sceneObjects.size(); i++) {
-                    if (sceneObjects[i]->getBoundingBox().inside(vec2(x, y))) {
+                for (int i = 0; i < boxes.size(); i++) {
+                    if (boxes[i]->getBoundingBox().inside(vec2(x, y))) {
                         switch (button) {
                             case 0:
-                                sceneObjects[i]->setCaptured(true);
+                                boxes[i]->setCaptured(true);
                                 mouseCaptured = true;
                                 break;
                             case 2:
-                                delete sceneObjects[i];
-                                sceneObjects.erase(sceneObjects.begin() + i);
+                                delete boxes[i];
+                                boxes.erase(boxes.begin() + i);
                         }
                         return;
                     }
                 }
                 if (button == 0) {
-                    sceneObjects.push_back(new Box(vec2(x, y), 8, 8, COLORS.FOREGROUND));
+                    boxes.push_back(new Box(vec2(x, y), 8, 8, COLORS.FOREGROUND));
                     mouseCaptured = true;
                 }
                 break;
@@ -219,7 +219,7 @@ void ofApp::mouseReleased(int x, int y, int button){
         }
     }
 
-    for (SceneObject* o : sceneObjects) {
+    for (Box* o : boxes) {
         if (o->getCaptured()) {
             o->setCaptured(false);
             mouseCaptured = false;

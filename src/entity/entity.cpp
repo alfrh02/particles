@@ -8,6 +8,8 @@ Entity::Entity(vec2 pos, float size, ofColor col) {
     _direction = vec2(0, 0);
 
     _color = col;
+
+    _captured = false;
 }
 
 void Entity::update(double deltaTime) {
@@ -20,6 +22,15 @@ void Entity::draw() {
 
 void Entity::drawEditMode() {
 
+}
+
+void Entity::setCaptured(bool captured, int x, int y) {
+    _captured = captured;
+    _mouseCoordinates = _position - vec2(x, y);
+}
+
+bool Entity::getCaptured() {
+    return _captured;
 }
 
 vec2 Entity::getPosition() {
