@@ -7,6 +7,8 @@ Particle::Particle(vec2 pos, vec2 dir, float size, float speed, unsigned short l
 
     _lifetime = 0;
     _lifespan = lifespan;
+
+    cout << "creating particle" << endl;
 }
 
 void Particle::update(double deltaTime) {
@@ -19,11 +21,32 @@ void Particle::draw() {
     ofDrawCircle(_position, _size);
 }
 
+void Particle::drawEditMode() {
+    ofSetColor(COLORS.DIRECTION);
+    ofDrawLine(_position, _position + _direction*(_size*4));
+}
+
 void Particle::onCollision(ofRectangle boundingBox) {
-    // find direction to the centre of the bounding box
-    vec2 dir = normalize(_position - (boundingBox.getPosition() + vec2(boundingBox.getWidth(), boundingBox.getHeight()) / 2));
-    cout << dir.x << " , " << dir.y << endl;
-    _direction = dir;
+    // change our direction
+    // direction = position - centre_of_bounding_box
+    float yRatio = boundingBox.getWidth() / boundingBox.getHeight();
+
+    vec2 v = _position - (boundingBox.getPosition() + (vec2(boundingBox.getWidth(), boundingBox.getHeight()) / 2));
+    v = v * vec2(1, yRatio);
+    v = normalize(rotate(v, ofDegToRad(45)));
+
+    vec2 newdir;
+    if (v.x <= 0 && v.y >= 0) { // bottom
+        newdir = vec2(1, -1);
+    } else if (v.x >= 0 && v.y <= 0) { // top
+        newdir = vec2(1, -1);
+    } else if (v.x >= 0 && v.y >= 0) { // right
+        newdir = vec2(-1, 1);
+    } else if (v.x <= 0 && v.y <= 0) { // left
+        newdir = vec2(-1, 1);
+    }
+
+    _direction *= newdir;
 }
 
 bool Particle::getIsDead() {

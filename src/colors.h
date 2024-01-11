@@ -22,4 +22,7 @@ const struct {
     ofColor EMITTER = BLACK;
 
     ofColor TEXT = BLACK;
+
+    ofColor DIRECTION = BLACK;
+    ofColor BOUNDING_BOX = RED;
 } COLORS;

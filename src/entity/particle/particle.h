@@ -8,6 +8,7 @@ class Particle : public Entity {
 
         void update(double deltaTime) override;
         void draw() override;
+        void drawEditMode() override;
 
         void onCollision(ofRectangle boundingBox);
 

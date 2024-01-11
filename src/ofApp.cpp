@@ -1,6 +1,21 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
+ofApp::~ofApp(){
+    for (Emitter* e : emitters) {
+        delete e;
+    }
+
+    for (Particle* p : particles) {
+        delete p;
+    }
+
+    for (SceneObject* o : sceneObjects) {
+        delete o;
+    }
+}
+
+//--------------------------------------------------------------
 void ofApp::setup(){
 }
 
@@ -131,7 +146,11 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-    // uncapture any captured
+    // for `button`:
+    // 0 == left click, 1 == middle click, 2 == right click
+
+    // when we are editing a box's width and height, we need to left click to stop editing
+    // we return the function prematurely to stop more behaviour from being calculated
     for (SceneObject* o : sceneObjects) {
         if (o->getCaptured()) {
             o->setCaptured(false);
@@ -140,39 +159,53 @@ void ofApp::mousePressed(int x, int y, int button){
         }
     }
 
-    if (mode == emitter && (button == 2 || button == 0) && !mouseCaptured) {
-        for (int i = 0; i < emitters.size(); i++) {
-            if (distance(vec2(x, y), emitters[i]->getPosition()) < emitters[i]->getSize()) {
-                if (button == 2) { // right click, delete
-                    delete emitters[i];
-                    emitters.erase(emitters.begin() + i);
-                    i--;
-                } else {           // left click, capture
-                    emitters[i]->setCaptured(true);
+    if (!mouseCaptured && mode != view) {
+        // in each case we are looping through a vector, checking if our mouse's xy coordinates are over each object in the vector.
+        // if we are clicking on an object, the function is prematured ended via `return`
+        // if we are not clicking on an object, the function will continue
+        // this explains why we are adding new objects at the end of the for loop to the vector we just looped through
+        switch (mode) {
+            case emitter:
+                for (int i = 0; i < emitters.size(); i++) {
+                    if (distance(vec2(x, y), emitters[i]->getPosition()) < emitters[i]->getSize()) {
+                        switch (button) {
+                            case 0:
+                                emitters[i]->setCaptured(true);
+                                mouseCaptured = true;
+                                break;
+                            case 2:
+                                delete emitters[i];
+                                emitters.erase(emitters.begin() + i);
+                        }
+                        return;
+                    }
+                }
+                if (button == 0) {
+                    emitters.push_back(new Emitter(vec2(x, y), COLORS.FOREGROUND, 0.25, -1));
+                }
+                break;
+            case box:
+                for (int i = 0; i < sceneObjects.size(); i++) {
+                    if (sceneObjects[i]->getBoundingBox().inside(vec2(x, y))) {
+                        switch (button) {
+                            case 0:
+                                sceneObjects[i]->setCaptured(true);
+                                mouseCaptured = true;
+                                break;
+                            case 2:
+                                delete sceneObjects[i];
+                                sceneObjects.erase(sceneObjects.begin() + i);
+                        }
+                        return;
+                    }
+                }
+                if (button == 0) {
+                    sceneObjects.push_back(new Box(vec2(x, y), 8, 8, COLORS.FOREGROUND));
                     mouseCaptured = true;
                 }
-                return;
-            }
+                break;
         }
 
-        for (int i = 0; i < sceneObjects.size(); i++) {
-            if (sceneObjects[i]->getBoundingBox().inside(vec2(x, y))) {
-                if (button == 2) { // right click, delete
-                    delete sceneObjects[i];
-                    sceneObjects.erase(sceneObjects.begin() + i);
-                    i--;
-                } else {           // left click, capture
-                    sceneObjects[i]->setCaptured(true);
-                    mouseCaptured = true;
-                }
-                return;
-            }
-        }
-
-        emitters.push_back(new Emitter(vec2(x, y), COLORS.FOREGROUND, 0.25, -1));
-    } else if (mode == box && button == 0 && !mouseCaptured) {
-        sceneObjects.push_back(new Box(vec2(x, y), 8, 8, COLORS.FOREGROUND));
-        mouseCaptured = true;
     }
 }
 

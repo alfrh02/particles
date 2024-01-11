@@ -20,6 +20,6 @@
         - [ ] Rotatable
     - [ ] Collision detection
 - [ ] Additional Emitter behaviour
-    - [ ] GUI Elements
+    ~~- [ ] GUI Elements~~
     - [ ] Spawn area
         - [ ] Emitter turns into a rectangle, where user can specify width/height, Particle objects will spawn randomly within that rectangle

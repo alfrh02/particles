@@ -19,10 +19,7 @@ void Entity::draw() {
 }
 
 void Entity::drawEditMode() {
-    ofNoFill();
-        ofSetColor(COLORS.GREEN);
-        ofDrawLine(_position, _position + (_direction * 10));
-    ofFill();
+
 }
 
 vec2 Entity::getPosition() {

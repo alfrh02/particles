@@ -18,10 +18,12 @@ void SceneObject::update(double deltaTime) {
 
 void SceneObject::drawEditMode() {
     ofNoFill();
-        ofSetColor(COLORS.RED);
+        ofSetColor(COLORS.BOUNDING_BOX);
         ofDrawRectangle(_boundingBox);
+        ofDrawLine(_boundingBox.getTopLeft(), _boundingBox.getBottomRight());
+        ofDrawLine(_boundingBox.getBottomLeft(), _boundingBox.getTopRight());
 
-        ofSetColor(COLORS.GREEN);
+        ofSetColor(COLORS.DIRECTION);
         ofDrawLine(_position, _position + (_direction * _size));
     ofFill();
 }
