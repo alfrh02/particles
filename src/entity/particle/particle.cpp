@@ -1,17 +1,18 @@
 #include "particle.h"
 
-Particle::Particle(vec2 pos, vec2 dir, float size, float speed, unsigned short lifespan, ofColor col)
+Particle::Particle(vec2 pos, void (*func)(Particle&), vec2 dir, float size, float speed, unsigned short lifespan, ofColor col)
 : Entity(pos, size, col) {
     _speed = speed;
     _direction = normalize(dir);
 
     _lifetime = 0;
     _lifespan = lifespan;
+
+    process = func;
 }
 
 void Particle::update(double deltaTime) {
-    _position += _speed * _direction * 1/ofGetFrameRate();
-    _lifetime += ofGetLastFrameTime();
+    process(*this); // dereference `this` so that we can process it through the function
 }
 
 void Particle::draw() {
@@ -34,7 +35,7 @@ void Particle::onCollision(ofRectangle boundingBox) {
     v = normalize(rotate(v, ofDegToRad(45)));
 
     vec2 newdir;
-    if (v.x <= 0 && v.y >= 0) { // bottom
+    if (v.x <= 0 && v.y >= 0) {        // bottom
         newdir = vec2(1, -1);
     } else if (v.x >= 0 && v.y <= 0) { // top
         newdir = vec2(1, -1);
@@ -52,4 +53,12 @@ bool Particle::getIsDead() {
         return true;
     }
     return _lifetime > _lifespan;
+}
+
+void Particle::setLifetime(float lifetime) {
+    _lifetime = lifetime;
+}
+
+float Particle::getLifetime() {
+    return _lifetime;
 }

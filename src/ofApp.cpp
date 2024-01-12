@@ -98,6 +98,14 @@ void ofApp::draw(){
             break;
         case emitter:
             s << "Placing Emitter" << endl;
+            switch (ptype) {
+                case spiral:
+                    s << "Type: Spiral" << endl;
+                    break;
+                case smoke:
+                    s << "Type: Smoke" << endl;
+                    break;
+            }
             break;
         case box:
             s << "Placing Box" << endl;
@@ -228,7 +236,7 @@ void ofApp::mousePressed(int x, int y, int button){
                     }
                 }
                 if (button == 0) {
-                    emitters.push_back(new Emitter(vec2(x, y), COLORS.FOREGROUND, 0.25, -1, ptype));
+                    emitters.push_back(new Emitter(vec2(x, y), COLORS.FOREGROUND, 0.25, 1, ptype));
                 }
                 break;
             case box:
@@ -307,14 +315,14 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 //--------------------------------------------------------------
 Particle* ofApp::parseParticleType(ParticleType ptype, vec2 emitterPos) {
+    cout << SPIRAL.SPAWN_DIRECTION(deltaTime) << endl;
     switch (ptype) {
         case spiral:
-            return new Particle(emitterPos, vec2(sin(deltaTime), cos(deltaTime)), 1, 100, -1, COLORS.FOREGROUND);
+            return new Particle(emitterPos, SPIRAL.UPDATE, SPIRAL.SPAWN_DIRECTION(deltaTime), SPIRAL.SIZE, SPIRAL.SPEED, SPIRAL.LIFETIME, SPIRAL.COLOR);
             break;
         case smoke:
-            int rand = (int)ofRandom(5);
-            return new SmokeParticle(emitterPos, vec2(sin(deltaTime)/10, ofClamp(cos(deltaTime), -0.1, -1)), ofRandom(4) + 1, 10, 10, COLORS.SMOKE[rand]);
+            return new Particle(emitterPos, SMOKE.UPDATE, SMOKE.SPAWN_DIRECTION(deltaTime), SMOKE.SIZE(), SMOKE.SPEED, SMOKE.LIFETIME, SMOKE.COLOR());
             break;
     }
-    return new Particle(emitterPos, vec2(0, 0), 0, 0, -1, COLORS.RED);
+    return new Particle(emitterPos, SPIRAL.UPDATE, SPIRAL.SPAWN_DIRECTION(deltaTime), SPIRAL.SIZE, SPIRAL.SPEED, SPIRAL.LIFETIME, COLORS.RED);
 }

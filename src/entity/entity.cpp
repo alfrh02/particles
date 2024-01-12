@@ -24,19 +24,31 @@ void Entity::drawEditMode() {
 
 }
 
+void Entity::setPosition(vec2 position) {
+    _position = position;
+}
+
 void Entity::setCaptured(bool captured, int x, int y) {
     _captured = captured;
     _mouseCoordinates = _position - vec2(x, y);
-}
-
-bool Entity::getCaptured() {
-    return _captured;
 }
 
 vec2 Entity::getPosition() {
     return _position;
 }
 
+vec2 Entity::getDirection() {
+    return _direction;
+}
+
 float Entity::getSize() {
     return _size;
+}
+
+float Entity::getSpeed() {
+    return _speed;
+}
+
+bool Entity::getCaptured() {
+    return _captured;
 }

@@ -4,7 +4,6 @@
 #include "ofMain.h"
 
 #include "particle.h"
-#include "smokeParticle.h"
 
 #include "emitter.h"
 #include "box.h"

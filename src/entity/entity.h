@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "settings.h"
+#include "colors.h"
 
 using namespace glm;
 
@@ -13,11 +13,14 @@ class Entity {
         virtual void draw();
         virtual void drawEditMode();
 
+        void setPosition(vec2 position);
         void setCaptured(bool captured = false, int x = 0, int y = 0);
 
-        bool getCaptured();
         vec2 getPosition();
+        vec2 getDirection();
         float getSize();
+        float getSpeed();
+        bool getCaptured();
 
     protected:
         vec2 _position;

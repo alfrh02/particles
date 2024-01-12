@@ -3,6 +3,7 @@
 #include <vector>
 #include "entity.h"
 #include "particle.h"
+#include "particleConfig.hpp"
 
 class Emitter : public Entity {
     public:
