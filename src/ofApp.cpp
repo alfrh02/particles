@@ -315,14 +315,13 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 //--------------------------------------------------------------
 Particle* ofApp::parseParticleType(ParticleType ptype, vec2 emitterPos) {
-    cout << SPIRAL.SPAWN_DIRECTION(deltaTime) << endl;
     switch (ptype) {
         case spiral:
-            return new Particle(emitterPos, SPIRAL.UPDATE, SPIRAL.SPAWN_DIRECTION(deltaTime), SPIRAL.SIZE, SPIRAL.SPEED, SPIRAL.LIFETIME, SPIRAL.COLOR);
+            return new Particle(emitterPos, SPIRAL.SPAWN_DIRECTION(deltaTime), SPIRAL.SIZE, SPIRAL.SPEED, SPIRAL.LIFETIME, SPIRAL.COLOR);
             break;
         case smoke:
-            return new Particle(emitterPos, SMOKE.UPDATE, SMOKE.SPAWN_DIRECTION(deltaTime), SMOKE.SIZE(), SMOKE.SPEED, SMOKE.LIFETIME, SMOKE.COLOR());
+            return new SmokeParticle(emitterPos, SMOKE.SPAWN_DIRECTION(deltaTime), SMOKE.SIZE(), SMOKE.SPEED, SMOKE.LIFETIME, SMOKE.COLOR());
             break;
     }
-    return new Particle(emitterPos, SPIRAL.UPDATE, SPIRAL.SPAWN_DIRECTION(deltaTime), SPIRAL.SIZE, SPIRAL.SPEED, SPIRAL.LIFETIME, COLORS.RED);
+    return new Particle(emitterPos, SPIRAL.SPAWN_DIRECTION(deltaTime), SPIRAL.SIZE, SPIRAL.SPEED, SPIRAL.LIFETIME, COLORS.RED);
 }

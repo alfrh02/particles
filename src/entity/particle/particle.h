@@ -4,10 +4,9 @@
 
 class Particle : public Entity {
     public:
-        Particle(vec2 pos, void (*func)(Particle&), vec2 dir, float size, float speed, unsigned short lifespan, ofColor col);
+        Particle(vec2 pos, vec2 dir, float size, float speed, unsigned short lifespan, ofColor col);
 
         void update(double deltaTime) override;
-        void (*process)(Particle&);
         void draw() override;
         void drawEditMode() override;
 

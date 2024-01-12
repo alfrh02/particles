@@ -1,18 +1,17 @@
 #include "particle.h"
 
-Particle::Particle(vec2 pos, void (*func)(Particle&), vec2 dir, float size, float speed, unsigned short lifespan, ofColor col)
+Particle::Particle(vec2 pos, vec2 dir, float size, float speed, unsigned short lifespan, ofColor col)
 : Entity(pos, size, col) {
     _speed = speed;
     _direction = normalize(dir);
 
     _lifetime = 0;
     _lifespan = lifespan;
-
-    process = func;
 }
 
 void Particle::update(double deltaTime) {
-    process(*this); // dereference `this` so that we can process it through the function
+    _position += _speed * _direction * 1/ofGetFrameRate();
+    _lifetime += ofGetLastFrameTime();
 }
 
 void Particle::draw() {
