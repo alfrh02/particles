@@ -34,6 +34,7 @@ class ofApp : public ofBaseApp{
 		enum Mode { view, emitter, box };
 		Mode mode = view;
 
+		bool showHelp = true;
 		bool mouseCaptured = false;
 
 		vector<Emitter*> emitters;

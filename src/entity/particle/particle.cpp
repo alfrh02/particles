@@ -3,7 +3,7 @@
 Particle::Particle(vec2 pos, vec2 dir, float size, float speed, unsigned short lifespan, ofColor col)
 : Entity(pos, size, col) {
     _speed = speed;
-    _direction = dir;
+    _direction = normalize(dir);
 
     _lifetime = 0;
     _lifespan = lifespan;
@@ -12,7 +12,7 @@ Particle::Particle(vec2 pos, vec2 dir, float size, float speed, unsigned short l
 }
 
 void Particle::update(double deltaTime) {
-    _position += _speed * _direction;
+    _position += _speed * _direction * 1/ofGetFrameRate();
     _lifetime += ofGetLastFrameTime();
 }
 

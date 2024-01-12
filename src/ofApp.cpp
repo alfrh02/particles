@@ -13,6 +13,7 @@ ofApp::~ofApp(){
     for (Box* o : boxes) {
         delete o;
     }
+
 }
 
 //--------------------------------------------------------------
@@ -28,7 +29,7 @@ void ofApp::update(){
         e->update(deltaTime);
 
         if (e->canSpawn()) {
-            Particle* p = new Particle(e->getPosition(), vec2(sin(deltaTime), cos(deltaTime)), 1, 0.1, -1, COLORS.FOREGROUND);
+            Particle* p = new Particle(e->getPosition(), vec2(sin(deltaTime), cos(deltaTime)), 1, 100, -1, COLORS.FOREGROUND);
             particles.push_back(p);
 
             e->addParticle(1);
@@ -63,29 +64,25 @@ void ofApp::update(){
 void ofApp::draw(){
     ofBackground(COLORS.BACKGROUND);
 
-    ofPushView();
+    if (mode != view) {
+        for (Emitter* e : emitters) {
+            e->drawEditMode();
+        }
+    }
 
+    for (Particle* p : particles) {
+        p->draw();
         if (mode != view) {
-            for (Emitter* e : emitters) {
-                e->drawEditMode();
-            }
+            p->drawEditMode();
         }
+    }
 
-        for (Particle* p : particles) {
-            p->draw();
-            if (mode != view) {
-                p->drawEditMode();
-            }
+    for (Box* o : boxes) {
+        o->draw();
+        if (mode != view) {
+            o->drawEditMode();
         }
-
-        for (Box* o : boxes) {
-            o->draw();
-            if (mode != view) {
-                o->drawEditMode();
-            }
-        }
-
-    ofPopView();
+    }
 
     stringstream s;
 
@@ -109,6 +106,39 @@ void ofApp::draw(){
 
     ofSetColor(COLORS.TEXT);
     ofDrawBitmapString(s.str().c_str(), vec2(8, 16));
+
+    if (showHelp) {
+        stringstream h;
+
+        h << "       <Particle Simulator>       " << endl;
+        h << " Use keys 1, 2 & 3 to switch mode " << endl;
+        h << "" << endl;
+        h << "     1:        View               " << endl;
+        h << "     2:   Placing Emitter         " << endl;
+        h << "     3: Placing Box/Obstacle      " << endl;
+        h << "" << endl;
+        h << "Left click to place/move an object" << endl;
+        h << "       Right click to delete      " << endl;
+        h << "" << endl;
+        h << "  Press 'f' to toggle fullscreen  " << endl;
+        h << " Press 'h' to toggle this message " << endl;
+        h << "                ---               " << endl;
+        h << "Particle systems are used in games" << endl;
+        h << " and other forms of digital media " << endl;
+        h << "to depict complex visuals such as " << endl;
+        h << "  electricity, fire, smoke, and   " << endl;
+        h << " other kinds of amorphous things. " << endl;
+        h << "" << endl;
+        h << " There are multiple aspects to a  " << endl;
+        h << "   particle system. As the name   " << endl;
+        h << "    suggests, an emitter emits    " << endl;
+        h << " particles from itself. Particles " << endl;
+        h << "  have a set behaviour to follow  " << endl;
+        h << "     from equations simple as     " << endl;
+        h << "     moving in one direction.     " << endl;
+
+        ofDrawBitmapStringHighlight(h.str().c_str(), vec2(8, 128), COLORS.FOREGROUND, COLORS.BACKGROUND);
+    }
 }
 
 //--------------------------------------------------------------
@@ -116,6 +146,9 @@ void ofApp::keyPressed(int key){
     switch (key) {
         case 'f':
             ofToggleFullscreen();
+            break;
+        case 'h':
+            showHelp = !showHelp;
             break;
         case '1':
             mode = view;
@@ -180,12 +213,17 @@ void ofApp::mousePressed(int x, int y, int button){
                         return;
                     }
                 }
+                for (int i = 0; i < boxes.size(); i++) { // we dont want the user to be able to place emitters under boxes
+                    if (boxes[i]->getBoundingBox().inside(vec2(x, y))) {
+                        return;
+                    }
+                }
                 if (button == 0) {
                     emitters.push_back(new Emitter(vec2(x, y), COLORS.FOREGROUND, 0.25, -1));
                 }
                 break;
             case box:
-                for (int i = 0; i < boxes.size(); i++) {
+                for (int i = boxes.size() - 1; i >= 0; i--) { // iterate backwards so we are interacting with the box on top of the other boxes first
                     if (boxes[i]->getBoundingBox().inside(vec2(x, y))) {
                         switch (button) {
                             case 0:

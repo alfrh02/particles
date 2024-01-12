@@ -16,9 +16,9 @@
     - [ ] Gravity Particles?
 - [ ] 2D objects for particles to interact with
     - [ ] Objects that are:
-        - [ ] Placeable
+        - [x] Placeable
         - [ ] Rotatable
-    - [ ] Collision detection
+    - [x] Collision detection
 - [ ] Additional Emitter behaviour
     ~~- [ ] GUI Elements~~
     - [ ] Spawn area
