@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "colors.h"
+#include "settings.h"
 
 using namespace glm;
 

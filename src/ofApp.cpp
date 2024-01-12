@@ -29,7 +29,7 @@ void ofApp::update(){
         e->update(deltaTime);
 
         if (e->canSpawn()) {
-            Particle* p = new Particle(e->getPosition(), vec2(sin(deltaTime), cos(deltaTime)), 1, 100, -1, COLORS.FOREGROUND);
+            Particle* p = parseParticleType(e->getParticleType(), e->getPosition());
             particles.push_back(p);
 
             e->addParticle(1);
@@ -144,12 +144,14 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     switch (key) {
+        // misc settings
         case 'f':
             ofToggleFullscreen();
             break;
         case 'h':
             showHelp = !showHelp;
             break;
+        // changing mode
         case '1':
             mode = view;
             break;
@@ -158,6 +160,13 @@ void ofApp::keyPressed(int key){
             break;
         case '3':
             mode = box;
+            break;
+        // changing particle type
+        case 'q':
+            ptype = spiral;
+            break;
+        case 'w':
+            ptype = smoke;
             break;
     }
 }
@@ -219,7 +228,7 @@ void ofApp::mousePressed(int x, int y, int button){
                     }
                 }
                 if (button == 0) {
-                    emitters.push_back(new Emitter(vec2(x, y), COLORS.FOREGROUND, 0.25, -1));
+                    emitters.push_back(new Emitter(vec2(x, y), COLORS.FOREGROUND, 0.25, -1, ptype));
                 }
                 break;
             case box:
@@ -294,4 +303,18 @@ void ofApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){
 
+}
+
+//--------------------------------------------------------------
+Particle* ofApp::parseParticleType(ParticleType ptype, vec2 emitterPos) {
+    switch (ptype) {
+        case spiral:
+            return new Particle(emitterPos, vec2(sin(deltaTime), cos(deltaTime)), 1, 100, -1, COLORS.FOREGROUND);
+            break;
+        case smoke:
+            int rand = (int)ofRandom(5);
+            return new SmokeParticle(emitterPos, vec2(sin(deltaTime)/10, ofClamp(cos(deltaTime), -0.1, -1)), ofRandom(4) + 1, 10, 10, COLORS.SMOKE[rand]);
+            break;
+    }
+    return new Particle(emitterPos, vec2(0, 0), 0, 0, -1, COLORS.RED);
 }

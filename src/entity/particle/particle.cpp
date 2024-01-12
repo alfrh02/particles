@@ -7,8 +7,6 @@ Particle::Particle(vec2 pos, vec2 dir, float size, float speed, unsigned short l
 
     _lifetime = 0;
     _lifespan = lifespan;
-
-    cout << "creating particle" << endl;
 }
 
 void Particle::update(double deltaTime) {

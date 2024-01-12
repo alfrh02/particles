@@ -1,10 +1,11 @@
 #include "emitter.h"
 
-Emitter::Emitter(vec2 pos, ofColor col, float spawnInterval, unsigned short maxParticles)
+Emitter::Emitter(vec2 pos, ofColor col, float spawnInterval, unsigned short maxParticles, ParticleType ptype)
 : Entity(pos, 8, col){
     _spawnInterval = spawnInterval;
     _particleNum = 0;
     _maxParticles = maxParticles;
+    _ptype = ptype;
 
     _captured = false;
     _timeSinceLastSpawn = 0;
@@ -40,4 +41,8 @@ bool Emitter::canSpawn() {
         return true;
     }
     return false;
+}
+
+ParticleType Emitter::getParticleType() {
+    return _ptype;
 }

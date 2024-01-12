@@ -2,6 +2,10 @@
 
 #include <vector>
 #include "ofMain.h"
+
+#include "particle.h"
+#include "smokeParticle.h"
+
 #include "emitter.h"
 #include "box.h"
 
@@ -28,6 +32,9 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+
+		Particle* parseParticleType(ParticleType ptype, vec2 emitterPos);
+		ParticleType ptype = smoke;
 
 		double deltaTime = 0;
 

@@ -14,7 +14,7 @@ class Particle : public Entity {
 
         bool getIsDead();
 
-    private:
+    protected:
         vec2 _direction;
 
         float _lifetime;
