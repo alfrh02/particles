@@ -7,7 +7,8 @@
 
 class Emitter : public Entity {
     public:
-        Emitter(vec2 pos, ofColor col, float spawnInterval, unsigned short maxParticles, ParticleType ptype);
+        Emitter(vec2 pos, float spawnInterval, unsigned short maxParticles, ParticleType ptype);
+        Emitter(vec2 pos, float spawnInterval, float rangeSpawnInterval, unsigned short maxParticles, ParticleType ptype);
 
         void update(double deltaTime) override;
         void drawEditMode() override;
@@ -23,6 +24,9 @@ class Emitter : public Entity {
 
         float _spawnInterval;
         float _timeSinceLastSpawn;
+        float _range0;
+        float _range1;
+        bool _isUsingRange = false;
 
         ParticleType _ptype;
 };

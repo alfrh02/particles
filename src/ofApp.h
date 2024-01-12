@@ -2,9 +2,11 @@
 
 #include <vector>
 #include "ofMain.h"
+#include "ofxGui.h"
 
 #include "particle.h"
 #include "smokeParticle.h"
+#include "electricParticle.h"
 
 #include "emitter.h"
 #include "box.h"
@@ -34,7 +36,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 		Particle* parseParticleType(ParticleType ptype, vec2 emitterPos);
-		ParticleType ptype = smoke;
+		ParticleType ptype = spiral;
 
 		double deltaTime = 0;
 
@@ -43,6 +45,11 @@ class ofApp : public ofBaseApp{
 
 		bool showHelp = true;
 		bool mouseCaptured = false;
+
+		ofxPanel gui;
+		// ofxSlider maxParticles;
+		ofxFloatSlider spawnInterval;
+		ofxToggle isSpawnIntervalRange;
 
 		vector<Emitter*> emitters;
 		vector<Particle*> particles;

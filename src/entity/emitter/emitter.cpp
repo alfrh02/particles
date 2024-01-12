@@ -1,7 +1,7 @@
 #include "emitter.h"
 
-Emitter::Emitter(vec2 pos, ofColor col, float spawnInterval, unsigned short maxParticles, ParticleType ptype)
-: Entity(pos, 8, col){
+Emitter::Emitter(vec2 pos, float spawnInterval, unsigned short maxParticles, ParticleType ptype)
+: Entity(pos, 8){
     _spawnInterval = spawnInterval;
     _particleNum = 0;
     _maxParticles = maxParticles;
@@ -11,7 +11,15 @@ Emitter::Emitter(vec2 pos, ofColor col, float spawnInterval, unsigned short maxP
     _timeSinceLastSpawn = 0;
 }
 
+Emitter::Emitter(vec2 pos, float spawnInterval, float rangeSpawnInterval, unsigned short maxParticles, ParticleType ptype)
+: Emitter(pos, spawnInterval, maxParticles, ptype){
+    _isUsingRange = true;
+    _range0 = spawnInterval;
+    _range1 = rangeSpawnInterval;
+}
+
 void Emitter::update(double deltaTime) {
+    cout << _isUsingRange << endl;
     _timeSinceLastSpawn += ofGetLastFrameTime();
 
     if (_captured) {
@@ -20,9 +28,9 @@ void Emitter::update(double deltaTime) {
 }
 
 void Emitter::drawEditMode() {
-    ofSetColor(_color);
+    ofSetColor(COLORS.FOREGROUND);
     if (_captured) {
-        ofSetColor(COLORS.RED);
+        ofSetColor(COLORS.HIGHLIGHT);
     }
 
     ofDrawCircle(_position, _size);
@@ -38,6 +46,9 @@ void Emitter::addParticle(unsigned short num) {
 bool Emitter::canSpawn() {
     if (_timeSinceLastSpawn >= _spawnInterval && _particleNum + 1 <= _maxParticles) {
         _timeSinceLastSpawn = 0;
+        if (_isUsingRange) {
+            _spawnInterval = ofRandom(_range1 - _range0) + _range0;
+        }
         return true;
     }
     return false;

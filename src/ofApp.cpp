@@ -13,11 +13,14 @@ ofApp::~ofApp(){
     for (Box* o : boxes) {
         delete o;
     }
-
 }
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    gui.setup();
+    // gui.add(maxParticles.setup("Max Particles", -1, -1, 1024, 300, 10));
+    gui.add(spawnInterval.setup("Spawn Interval", 0.25, -0.01, 8, 300, 32));
+    gui.add(isSpawnIntervalRange.setup("Spawn Using Range?", false, 300, 32));
 }
 
 //--------------------------------------------------------------
@@ -105,6 +108,9 @@ void ofApp::draw(){
                 case smoke:
                     s << "Type: Smoke" << endl;
                     break;
+                case electric:
+                    s << "Type: Electric" << endl;
+                    break;
             }
             break;
         case box:
@@ -147,6 +153,8 @@ void ofApp::draw(){
 
         ofDrawBitmapStringHighlight(h.str().c_str(), vec2(8, 128), COLORS.FOREGROUND, COLORS.BACKGROUND);
     }
+
+    gui.draw();
 }
 
 //--------------------------------------------------------------
@@ -175,6 +183,9 @@ void ofApp::keyPressed(int key){
             break;
         case 'w':
             ptype = smoke;
+            break;
+        case 'e':
+            ptype = electric;
             break;
     }
 }
@@ -236,8 +247,12 @@ void ofApp::mousePressed(int x, int y, int button){
                     }
                 }
                 if (button == 0) {
-                    emitters.push_back(new Emitter(vec2(x, y), COLORS.FOREGROUND, 0.25, 1, ptype));
-                }
+                        if (ptype == electric) {
+                            emitters.push_back(new Emitter(vec2(x, y), 1, 5, -1, ptype));
+                        } else {
+                            emitters.push_back(new Emitter(vec2(x, y), spawnInterval, -1, ptype));
+                        }
+                    }
                 break;
             case box:
                 for (int i = boxes.size() - 1; i >= 0; i--) { // iterate backwards so we are interacting with the box on top of the other boxes first
@@ -317,11 +332,46 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 Particle* ofApp::parseParticleType(ParticleType ptype, vec2 emitterPos) {
     switch (ptype) {
         case spiral:
-            return new Particle(emitterPos, SPIRAL.SPAWN_DIRECTION(deltaTime), SPIRAL.SIZE, SPIRAL.SPEED, SPIRAL.LIFETIME, SPIRAL.COLOR);
+            return new Particle(emitterPos,
+                vec2(sin(deltaTime), // starting position
+                cos(deltaTime)),     // starting direction
+                1,                   // starting size
+                100,                 // starting speed (in px/s)
+                -1,                  // lifespan
+                COLORS.FOREGROUND    // color
+            );
             break;
         case smoke:
-            return new SmokeParticle(emitterPos, SMOKE.SPAWN_DIRECTION(deltaTime), SMOKE.SIZE(), SMOKE.SPEED, SMOKE.LIFETIME, SMOKE.COLOR());
+            {
+            float size = ofRandom(4) + 1;
+            return new SmokeParticle(
+                emitterPos,
+                vec2(sin(deltaTime) / 10, ofClamp(cos(deltaTime), -0.01, -1)),
+                size,
+                2 * size,
+                60,
+                COLORS.SMOKE[(int)ofRandom(5)]
+            );
+            break;
+            }
+        case electric:
+            return new ElectricParticle(
+                emitterPos,
+                vec2(ofRandom(0.2) - 0.1, ofRandom(-1)),
+                1,
+                50,
+                10,
+                COLORS.ELECTRIC
+            );
             break;
     }
-    return new Particle(emitterPos, SPIRAL.SPAWN_DIRECTION(deltaTime), SPIRAL.SIZE, SPIRAL.SPEED, SPIRAL.LIFETIME, COLORS.RED);
+    // VV this particle should not spawn
+    return new Particle(emitterPos,
+        vec2(sin(deltaTime), // starting position
+        cos(deltaTime)),     // starting direction
+        1,                   // starting size
+        100,                 // starting speed (in px/s)
+        -1,                  // lifespan
+        COLORS.RED
+    );
 }

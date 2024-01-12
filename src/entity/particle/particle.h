@@ -10,7 +10,7 @@ class Particle : public Entity {
         void draw() override;
         void drawEditMode() override;
 
-        void onCollision(ofRectangle boundingBox);
+        virtual void onCollision(ofRectangle boundingBox);
 
         void setLifetime(float lifetime);
 

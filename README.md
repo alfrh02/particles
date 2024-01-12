@@ -15,13 +15,14 @@ New particle types can be easily deployed by anybody with some rudimentary progr
     ~~- [ ] Size~~
     ~~- [ ] Velocity~~
 - [ ] Particle types
-    - [ ] Smoke
+    - [x] Smoke
+    - [x] Electricity
     - [ ] Fire
     - [ ] Smoke & Fire
     - [ ] Rain
     - [ ] Galaxy
     - [ ] Boids
-    - [ ] Gravity Particles?
+    - [ ] Stars?
 - [ ] 2D objects for particles to interact with
     - [ ] Objects that are:
         - [x] Placeable
