@@ -21,6 +21,14 @@ void Box::update(double deltaTime) {
         _rect = ofRectangle(_position, _width, _height);
         _boundingBox = ofRectangle(_position, _width, _height);
     } else if (_editing) {
+        if ((_width < 2 && _width > -2) || (_height < 2 && _height > -2)) {
+            cout << "too small!" << endl;
+
+            _width = 5;
+            _height = 5;
+            _rect = ofRectangle(_position, _width, _height);
+            _boundingBox = ofRectangle(_position, _width, _height);
+        }
         _captured = false;
         _editing = false;
     }

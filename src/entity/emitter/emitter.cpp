@@ -37,9 +37,7 @@ void Emitter::addParticle(unsigned short num) {
 bool Emitter::canSpawn() {
     if (_timeSinceLastSpawn >= _spawnInterval && _particleNum + 1 <= _maxParticles) {
         _timeSinceLastSpawn = 0;
-        cout << "spawning" << endl;
         return true;
     }
-    cout << " test " << _timeSinceLastSpawn << ", " << _spawnInterval << ", " << _particleNum << ", " << _maxParticles << endl;
     return false;
 }
