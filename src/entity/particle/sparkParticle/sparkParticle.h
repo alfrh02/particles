@@ -4,7 +4,7 @@
 
 class SparkParticle : public Particle {
     public:
-        SparkParticle(vec2 pos, vec2 dir, float size, float speed, unsigned short lifespan, ofColor col);
+        SparkParticle(vec2 pos = vec2(0, 0), vec2 dir = vec2(0, 0), float size = 1, float speed = 50, unsigned short lifespan = 10, ofColor col = COLORS.ELECTRIC);
 
         void update(double deltaTime) override;
 

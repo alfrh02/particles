@@ -1,7 +1,7 @@
 #pragma once
 //--------------------------------------------------------------
 const struct {
-    ofColor WHITE = ofColor(128, 128, 128);
+    ofColor WHITE = ofColor(196);
     ofColor GRAY = ofColor(32);
     ofColor DARK_GRAY = ofColor(96);
     ofColor BLACK = ofColor(0);

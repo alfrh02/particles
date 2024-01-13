@@ -18,11 +18,14 @@ ofApp::~ofApp(){
 //--------------------------------------------------------------
 void ofApp::setup(){
     helpText << "       <Particle Simulator>       " << endl;
-    helpText << " Use keys 1, 2 & 3 to switch mode " << endl;
+    helpText << " Use keys q, w & e to switch mode " << endl;
     helpText << "" << endl;
     helpText << "     1:        View               " << endl;
     helpText << "     2:   Placing Emitter         " << endl;
     helpText << "     3: Placing Box/Obstacle      " << endl;
+    helpText << "" << endl;
+    helpText << "When placing emitters use keys 1-4" << endl;
+    helpText << " to switch through particle types " << endl;
     helpText << "" << endl;
     helpText << "Left click to place/move an object" << endl;
     helpText << "       Right click to delete      " << endl;
@@ -124,8 +127,8 @@ void ofApp::draw(){
         case emitter:
             s << "Placing Emitter" << endl;
             switch (ptype) {
-                case spiral:
-                    s << "Type: Spiral" << endl;
+                case bullet:
+                    s << "Type: Bullet" << endl;
                     break;
                 case smoke:
                     s << "Type: Smoke" << endl;
@@ -175,7 +178,7 @@ void ofApp::keyPressed(int key){
 
         // changing particle type
         case '1':
-            ptype = spiral;
+            ptype = bullet;
             break;
         case '2':
             ptype = smoke;
@@ -284,60 +287,34 @@ void ofApp::mouseReleased(int x, int y, int button){
 //--------------------------------------------------------------
 Particle* ofApp::parseParticleType(ParticleType ptype, vec2 emitterPos) {
     switch (ptype) {
-        case spiral:
-            return new Particle(emitterPos,
-                vec2(sin(deltaTime), // starting position
-                cos(deltaTime)),     // starting direction
-                1,                   // starting size
-                100,                 // starting speed (in px/s)
-                -1,                  // lifespan
-                COLORS.FOREGROUND    // color
+        case bullet:
+            return new Particle(
+                emitterPos,
+                vec2(sin(deltaTime), cos(deltaTime))
             );
             break;
         case smoke:
-            {
-            float size = ofRandom(4) + 1;
             return new SmokeParticle(
                 emitterPos,
-                vec2(sin(deltaTime) / 10, ofClamp(cos(deltaTime), -0.01, -1)),
-                size,
-                2 * size,
-                60,
-                COLORS.SMOKE[(int)ofRandom(5)]
+                vec2(sin(deltaTime) / 10, ofClamp(cos(deltaTime), -0.01, -1))
             );
             break;
-            }
         case fire:
-            {
-            float size = ofRandom(4) + 1;
             return new FireParticle(
                 emitterPos,
-                vec2(sin(deltaTime) / 10, ofClamp(cos(deltaTime), -0.01, -1)),
-                size,
-                2 * size,
-                6,
-                COLORS.FIRE[(int)ofRandom(5)]
+                vec2(sin(deltaTime) / 10, ofClamp(cos(deltaTime), -0.01, -1))
             );
             break;
-            }
         case spark:
             return new SparkParticle(
                 emitterPos,
-                vec2(ofRandom(0.2) - 0.1, ofRandom(-1)),
-                1,
-                50,
-                10,
-                COLORS.ELECTRIC
+                vec2(ofRandom(0.2) - 0.1, ofRandom(-1))
             );
             break;
     }
     // VV this particle should not spawn
-    return new Particle(emitterPos,
-        vec2(sin(deltaTime), // starting position
-        cos(deltaTime)),     // starting direction
-        1,                   // starting size
-        100,                 // starting speed (in px/s)
-        -1,                  // lifespan
-        COLORS.RED
+    return new Particle(
+        emitterPos,
+        vec2(sin(deltaTime), cos(deltaTime)) // starting position
     );
 }

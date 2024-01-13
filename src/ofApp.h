@@ -29,7 +29,7 @@ class ofApp : public ofBaseApp{
 		void mouseReleased(int x, int y, int button);
 
 		Particle* parseParticleType(ParticleType ptype, vec2 emitterPos);
-		ParticleType ptype = spiral;
+		ParticleType ptype = bullet;
 
 		double deltaTime = 0;
 

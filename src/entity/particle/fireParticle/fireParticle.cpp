@@ -2,7 +2,6 @@
 
 FireParticle::FireParticle(vec2 pos, vec2 dir, float size, float speed, unsigned short lifespan, ofColor col)
 : Particle(pos, dir, size, speed, lifespan, col) {
-
     _type = "Fire";
 }
 

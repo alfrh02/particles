@@ -17,7 +17,7 @@ New particle types can be easily deployed by anybody with some rudimentary progr
 - [ ] Particle types
     - [x] Smoke
     - [x] Electricity
-    - [ ] Fire
+    - [x] Fire
     - [ ] Smoke & Fire
     - [ ] Rain
     - [ ] Galaxy

@@ -1,3 +1,3 @@
 #pragma once
 
-enum ParticleType { spiral, smoke, spark, fire };
+enum ParticleType { bullet, smoke, spark, fire};
