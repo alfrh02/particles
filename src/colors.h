@@ -30,5 +30,13 @@ const struct {
         ofColor(120, 120, 120, SMOKE_ALPHA)
     };
 
+    ofColor FIRE[5] = {
+        ofColor(200, 25,  13,  SMOKE_ALPHA),
+        ofColor(252, 140, 20,  SMOKE_ALPHA),
+        ofColor(255, 187, 0,   SMOKE_ALPHA),
+        ofColor(255, 96,  0,   SMOKE_ALPHA),
+        ofColor(160, 30,  8,   SMOKE_ALPHA)
+    };
+
     ofColor ELECTRIC = YELLOW;
 } COLORS;

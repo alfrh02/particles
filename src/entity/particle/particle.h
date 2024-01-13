@@ -18,6 +18,8 @@ class Particle : public Entity {
         float getLifetime();
 
     protected:
+        string _type;
+
         float _lifetime;
         unsigned short _lifespan; // we keep this as an unsigned short so that we can pass -1 as an argument to mean practically infinite
 };

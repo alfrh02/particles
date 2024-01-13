@@ -7,6 +7,8 @@ Particle::Particle(vec2 pos, vec2 dir, float size, float speed, unsigned short l
 
     _lifetime = 0;
     _lifespan = lifespan;
+
+    _type = "Spiral";
 }
 
 void Particle::update(double deltaTime) {

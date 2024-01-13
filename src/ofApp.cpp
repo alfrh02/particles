@@ -17,10 +17,32 @@ ofApp::~ofApp(){
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    gui.setup();
-    // gui.add(maxParticles.setup("Max Particles", -1, -1, 1024, 300, 10));
-    gui.add(spawnInterval.setup("Spawn Interval", 0.25, -0.01, 8, 300, 32));
-    gui.add(isSpawnIntervalRange.setup("Spawn Using Range?", false, 300, 32));
+    helpText << "       <Particle Simulator>       " << endl;
+    helpText << " Use keys 1, 2 & 3 to switch mode " << endl;
+    helpText << "" << endl;
+    helpText << "     1:        View               " << endl;
+    helpText << "     2:   Placing Emitter         " << endl;
+    helpText << "     3: Placing Box/Obstacle      " << endl;
+    helpText << "" << endl;
+    helpText << "Left click to place/move an object" << endl;
+    helpText << "       Right click to delete      " << endl;
+    helpText << "" << endl;
+    helpText << "  Press 'f' to toggle fullscreen  " << endl;
+    helpText << " Press 'h' to toggle this message " << endl;
+    helpText << "                ---               " << endl;
+    helpText << "Particle systems are used in games" << endl;
+    helpText << " and other forms of digital media " << endl;
+    helpText << "to depict complex visuals such as " << endl;
+    helpText << "  sparkity, fire, smoke, and   " << endl;
+    helpText << " other kinds of amorphous things. " << endl;
+    helpText << "" << endl;
+    helpText << " There are multiple aspects to a  " << endl;
+    helpText << "   particle system. As the name   " << endl;
+    helpText << "    suggests, an emitter emits    " << endl;
+    helpText << " particles from itself. Particles " << endl;
+    helpText << "  have a set behaviour to follow  " << endl;
+    helpText << "     from equations simple as     " << endl;
+    helpText << "     moving in one direction.     " << endl;
 }
 
 //--------------------------------------------------------------
@@ -108,8 +130,11 @@ void ofApp::draw(){
                 case smoke:
                     s << "Type: Smoke" << endl;
                     break;
-                case electric:
-                    s << "Type: Electric" << endl;
+                case spark:
+                    s << "Type: Spark" << endl;
+                    break;
+                case fire:
+                    s << "Type: Fire" << endl;
                     break;
             }
             break;
@@ -122,39 +147,8 @@ void ofApp::draw(){
     ofDrawBitmapString(s.str().c_str(), vec2(8, 16));
 
     if (showHelp) {
-        stringstream h;
-
-        h << "       <Particle Simulator>       " << endl;
-        h << " Use keys 1, 2 & 3 to switch mode " << endl;
-        h << "" << endl;
-        h << "     1:        View               " << endl;
-        h << "     2:   Placing Emitter         " << endl;
-        h << "     3: Placing Box/Obstacle      " << endl;
-        h << "" << endl;
-        h << "Left click to place/move an object" << endl;
-        h << "       Right click to delete      " << endl;
-        h << "" << endl;
-        h << "  Press 'f' to toggle fullscreen  " << endl;
-        h << " Press 'h' to toggle this message " << endl;
-        h << "                ---               " << endl;
-        h << "Particle systems are used in games" << endl;
-        h << " and other forms of digital media " << endl;
-        h << "to depict complex visuals such as " << endl;
-        h << "  electricity, fire, smoke, and   " << endl;
-        h << " other kinds of amorphous things. " << endl;
-        h << "" << endl;
-        h << " There are multiple aspects to a  " << endl;
-        h << "   particle system. As the name   " << endl;
-        h << "    suggests, an emitter emits    " << endl;
-        h << " particles from itself. Particles " << endl;
-        h << "  have a set behaviour to follow  " << endl;
-        h << "     from equations simple as     " << endl;
-        h << "     moving in one direction.     " << endl;
-
-        ofDrawBitmapStringHighlight(h.str().c_str(), vec2(8, 128), COLORS.FOREGROUND, COLORS.BACKGROUND);
+        ofDrawBitmapStringHighlight(helpText.str().c_str(), vec2(8, 128), COLORS.FOREGROUND, COLORS.BACKGROUND);
     }
-
-    gui.draw();
 }
 
 //--------------------------------------------------------------
@@ -167,42 +161,32 @@ void ofApp::keyPressed(int key){
         case 'h':
             showHelp = !showHelp;
             break;
+
         // changing mode
-        case '1':
+        case 'q':
             mode = view;
             break;
-        case '2':
+        case 'w':
             mode = emitter;
             break;
-        case '3':
+        case 'e':
             mode = box;
             break;
+
         // changing particle type
-        case 'q':
+        case '1':
             ptype = spiral;
             break;
-        case 'w':
+        case '2':
             ptype = smoke;
             break;
-        case 'e':
-            ptype = electric;
+        case '3':
+            ptype = fire;
+            break;
+        case '4':
+            ptype = spark;
             break;
     }
-}
-
-//--------------------------------------------------------------
-void ofApp::keyReleased(int key){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-
 }
 
 //--------------------------------------------------------------
@@ -247,10 +231,10 @@ void ofApp::mousePressed(int x, int y, int button){
                     }
                 }
                 if (button == 0) {
-                        if (ptype == electric) {
+                        if (ptype == spark) {
                             emitters.push_back(new Emitter(vec2(x, y), 1, 5, -1, ptype));
                         } else {
-                            emitters.push_back(new Emitter(vec2(x, y), spawnInterval, -1, ptype));
+                            emitters.push_back(new Emitter(vec2(x, y), 0.25, -1, ptype));
                         }
                     }
                 break;
@@ -275,7 +259,6 @@ void ofApp::mousePressed(int x, int y, int button){
                 }
                 break;
         }
-
     }
 }
 
@@ -296,36 +279,6 @@ void ofApp::mouseReleased(int x, int y, int button){
             break;
         }
     }
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseScrolled(int x, int y, float scrollX, float scrollY) {
-
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){
-
 }
 
 //--------------------------------------------------------------
@@ -354,8 +307,21 @@ Particle* ofApp::parseParticleType(ParticleType ptype, vec2 emitterPos) {
             );
             break;
             }
-        case electric:
-            return new ElectricParticle(
+        case fire:
+            {
+            float size = ofRandom(4) + 1;
+            return new FireParticle(
+                emitterPos,
+                vec2(sin(deltaTime) / 10, ofClamp(cos(deltaTime), -0.01, -1)),
+                size,
+                2 * size,
+                6,
+                COLORS.FIRE[(int)ofRandom(5)]
+            );
+            break;
+            }
+        case spark:
+            return new SparkParticle(
                 emitterPos,
                 vec2(ofRandom(0.2) - 0.1, ofRandom(-1)),
                 1,

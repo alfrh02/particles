@@ -6,7 +6,8 @@
 
 #include "particle.h"
 #include "smokeParticle.h"
-#include "electricParticle.h"
+#include "sparkParticle.h"
+#include "fireParticle.h"
 
 #include "emitter.h"
 #include "box.h"
@@ -23,17 +24,9 @@ class ofApp : public ofBaseApp{
 		void draw();
 
 		void keyPressed(int key);
-		void keyReleased(int key);
-		void mouseMoved(int x, int y );
-		void mouseDragged(int x, int y, int button);
+
 		void mousePressed(int x, int y, int button);
 		void mouseReleased(int x, int y, int button);
-		void mouseEntered(int x, int y);
-		void mouseExited(int x, int y);
-		void mouseScrolled(int x, int y, float scrollX, float scrollY);
-		void windowResized(int w, int h);
-		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
 
 		Particle* parseParticleType(ParticleType ptype, vec2 emitterPos);
 		ParticleType ptype = spiral;
@@ -46,10 +39,7 @@ class ofApp : public ofBaseApp{
 		bool showHelp = true;
 		bool mouseCaptured = false;
 
-		ofxPanel gui;
-		// ofxSlider maxParticles;
-		ofxFloatSlider spawnInterval;
-		ofxToggle isSpawnIntervalRange;
+		stringstream helpText;
 
 		vector<Emitter*> emitters;
 		vector<Particle*> particles;
