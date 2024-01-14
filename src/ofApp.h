@@ -74,7 +74,7 @@ class ofApp : public ofBaseApp{
 		vector<Particle*> particles;
 		vector<Box*>      boxes;
 
-		ofxPanel editEmitterGui;
+		ofxPanel gui;
 		ofParameter<float> guiSpawnInterval;
 		ofParameter<bool> guiIsUsingRange;
 		ofParameter<float> guiSpawnRange;

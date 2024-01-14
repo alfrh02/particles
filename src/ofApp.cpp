@@ -19,11 +19,16 @@ ofApp::~ofApp(){
 void ofApp::setup(){
     // -------- gui setup
 
-    editEmitterGui.setup("Edit Emitter");
-    editEmitterGui.add(guiSpawnInterval.set("Spawn Interval", 0.25, 0, 30));
-    editEmitterGui.add(guiIsUsingRange.set("Using range", false, 18, 18));
-    editEmitterGui.add(guiSpawnRange.set("Spawn Range", 0, 0, 30));
-    editEmitterGui.add(guiMaxParticles.set("Max Particles", -1, -1, 1024));
+    gui.setBackgroundColor(COLORS.FOREGROUND);
+    gui.setDefaultTextColor(COLORS.BACKGROUND);
+    gui.setTextColor(COLORS.BACKGROUND);
+
+    gui.setup("Edit Emitter");
+    gui.add(guiSpawnInterval.set("Spawn Interval", 0.25, 0, 30));
+    gui.add(guiIsUsingRange.set("Using Range", false, 18, 18));
+    gui.add(guiSpawnRange.set("Spawn Range", 0, 0, 30));
+    gui.add(guiMaxParticles.set("Max Particles", -1, -1, 1024));
+    gui.setPosition(ofGetWidth() - 256, 128);
 
     guiSpawnInterval.addListener(this, &ofApp::setSelectedSpawnInterval);
     guiIsUsingRange.addListener(this, &ofApp::setSelectedUsingRange);
@@ -51,39 +56,79 @@ void ofApp::setup(){
 
     // -------- help text, about text
     helpText << "       <Particle Simulator>       " << endl;
-    helpText << " Use keys q, w & e to switch mode " << endl;
     helpText << "" << endl;
-    helpText << "     1:        View               " << endl;
-    helpText << "     2:   Placing Emitter         " << endl;
-    helpText << "     3: Placing Box/Obstacle      " << endl;
+    helpText << "Use keys 1-4 to switch mode.      " << endl;
     helpText << "" << endl;
-    helpText << "When placing emitters use keys 1-4" << endl;
-    helpText << " to switch through particle types " << endl;
-    helpText << "" << endl;
-    helpText << "   When in placing mode Emitters  " << endl;
-    helpText << "  be visible, and Particles will  " << endl;
-    helpText << "       show their direction       " << endl;
+    helpText << "     1: View                      " << endl;
+    helpText << "     2: Placing Emitter           " << endl;
+    helpText << "     3: Placing Area Emitter      " << endl;
+    helpText << "     4: Placing Box/Obstacle      " << endl;
     helpText << "" << endl;
     helpText << "Left click to place/move an object" << endl;
-    helpText << "       Right click to delete      " << endl;
+    helpText << "Right click to delete             " << endl;
     helpText << "" << endl;
-    helpText << "  Press 'f' to toggle fullscreen  " << endl;
-    helpText << " Press 'h' to toggle this message " << endl;
+    helpText << "Emitters create particles. In this" << endl;
+    helpText << "example, an emitter can either be " << endl;
+    helpText << "one point in space, or be an area." << endl;
+    helpText << "Area emitters will spawn particles" << endl;
+    helpText << "in their given area, but regular  " << endl;
+    helpText << "emitters will spawn particles only" << endl;
+    helpText << "on their position. Some particle  " << endl;
+    helpText << "types are intended for use with an" << endl;
+    helpText << "area emitter." << endl;
+    helpText << "" << endl;
+    helpText << "When placing emitters use control " << endl;
+    helpText << "and keys 1-5 to switch through    " << endl;
+    helpText << "particle types." << endl;
+    helpText << "" << endl;
+    helpText << "     1: Bullet                    " << endl;
+    helpText << "     2: Smoke                     " << endl;
+    helpText << "     3: Fire                      " << endl;
+    helpText << "     4: Spark                     " << endl;
+    helpText << "     5: Rain                      " << endl;
+    helpText << "     6: Bubble                    " << endl;
+    helpText << "" << endl;
+    helpText << "When in a 'placing' mode emitters " << endl;
+    helpText << "will be visible and particles     " << endl;
+    helpText << "will show their direction." << endl;
+    helpText << "" << endl;
+    helpText << "You can edit an emitter's settings" << endl;
+    helpText << "with the 'Edit Emitter' GUI. The  " << endl;
+    helpText << "Spawn Interval property controls  " << endl;
+    helpText << "how often a particle will be      " << endl;
+    helpText << "spawned (in seconds)."        << endl;
+    helpText << "" << endl;
+    helpText << "Emitters can also create particles" << endl;
+    helpText << "with random spawn intervals.      " << endl;
+    helpText << "To enable this, toggle the Using  " << endl;
+    helpText << "Range property and set the Spawn  " << endl;
+    helpText << "Range property to something below " << endl;
+    helpText << "the Spawn Interval property.      " << endl;
+    helpText << "For example, an Emitter with a    " << endl;
+    helpText << "Spawn Interval of 1 and a Spawn   " << endl;
+    helpText << "Range of 5 will spawn a particle  " << endl;
+    helpText << "every 1-5 seconds." << endl;
+    helpText << "" << endl;
+    helpText << "Press 'f' to toggle fullscreen   " << endl;
+    helpText << "Press 'h' to toggle this message " << endl;
 
-    aboutText << "             <About>              " << endl;
+    aboutText << "    <About Particle Systems>      " << endl;
     aboutText << "Particle systems are used in games" << endl;
-    aboutText << " and other forms of digital media " << endl;
+    aboutText << "and other forms of digital media  " << endl;
     aboutText << "to depict complex visuals such as " << endl;
-    aboutText << "  electricity, fire, smoke, and   " << endl;
-    aboutText << " other kinds of amorphous things. " << endl;
+    aboutText << "electricity, fire, smoke, and     " << endl;
+    aboutText << "other kinds of amorphous things.  " << endl;
     aboutText << "" << endl;
-    aboutText << " There are multiple aspects to a  " << endl;
-    aboutText << "   particle system. As the name   " << endl;
-    aboutText << "    suggests, an emitter emits    " << endl;
-    aboutText << " particles from itself. Particles " << endl;
-    aboutText << "  have a set behaviour to follow  " << endl;
-    aboutText << "     from equations simple as     " << endl;
-    aboutText << "     moving in one direction.     " << endl;
+    aboutText << "A particle is a type of entity    " << endl;
+    aboutText << "that is used to represent a small " << endl;
+    aboutText << "object. Particles are kept very   " << endl;
+    aboutText << "simple for computational reasons, " << endl;
+    aboutText << "as many particles are often needed" << endl;
+    aboutText << "to represent complex environments." << endl;
+    aboutText << "" << endl;
+    aboutText << "Particle emitters are points in   " << endl;
+    aboutText << "space that are the staging point  " << endl;
+    aboutText << "for particles to spawn at." << endl;
 }
 
 //--------------------------------------------------------------
@@ -130,6 +175,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofBackground(COLORS.BACKGROUND);
+    ofSetColor(COLORS.FOREGROUND);
 
     if (mode != view) {
         for (Emitter* e : emitters) {
@@ -156,68 +202,61 @@ void ofApp::draw(){
     s << to_string(ofGetFrameRate()) << " fps" << endl;
     s << to_string(deltaTime) << " seconds" << endl;
     s << to_string(particles.size()) << " particles" << endl;
-    s << to_string(ofGetMouseX()) << ", " << to_string(ofGetMouseY()) << endl;
-    s << "\nCurrent Mode: ";
 
-    string text;
+    ofDrawBitmapString(s.str().c_str(), vec2(8, 16));
+
     mouseText = "";
     switch (mode) {
         case view:
-            text = "View";
+            mouseText = "View";
             break;
         case emitter:
-            text = "Placing Emitter";
+            mouseText = "Placing Emitter";
             break;
         case areaEmitter:
-            text = "Placing Emitter (Area)";
+            mouseText = "Placing Area Emitter";
             break;
         case box:
-            text = "Placing Box";
+            mouseText = "Placing Box";
             break;
     }
 
-    mouseText += text;
-    s << text << endl;
+    mouseText += "\n";
 
     if (mode == emitter || mode == areaEmitter) {
         switch (emitterType.ptype) {
             case bullet:
-                text = "Type: Bullet";
+                mouseText += "Type: Bullet";
                 break;
             case smoke:
-                text = "Type: Smoke";
+                mouseText += "Type: Smoke";
                 break;
             case spark:
-                text = "Type: Spark";
+                mouseText += "Type: Spark";
                 break;
             case fire:
-                text = "Type: Fire";
+                mouseText += "Type: Fire";
                 break;
             case rain:
-                text = "Type: Rain";
+                mouseText += "Type: Rain";
                 break;
             case bubble:
-                text = "Type: Bubble";
+                mouseText += "Type: Bubble";
                 break;
         }
-        mouseText += "\n" + text;
-        s << text << endl;
     }
 
-    ofSetColor(COLORS.FOREGROUND);
-
-    ofDrawBitmapString(s.str().c_str(), vec2(8, 16));
-
+    // each character is 8px wide & 11px tall
     if (showHelp) {
-        ofDrawBitmapStringHighlight(helpText.str().c_str(), vec2(8, 128), COLORS.FOREGROUND, COLORS.BACKGROUND);
-        ofDrawBitmapStringHighlight(aboutText.str().c_str(), vec2(8, 512), COLORS.FOREGROUND, COLORS.BACKGROUND);
+        ofDrawBitmapStringHighlight(helpText.str().c_str(), vec2(8, 16), COLORS.FOREGROUND, COLORS.BACKGROUND);
+        // the max string length of a string within helpText is 34
+        ofDrawBitmapStringHighlight(aboutText.str().c_str(), vec2(24 + (34*8), 16), COLORS.FOREGROUND, COLORS.BACKGROUND);
     }
 
     if (mode != view) {
-        // each character is 8px wide & 11px tall
         // centre text right under cursor so as to not obstruct the user's view
         ofDrawBitmapStringHighlight(mouseText, vec2(ofGetMouseX() - ((text.length() * 8) / 2), ofGetMouseY() + 44), COLORS.FOREGROUND, COLORS.BACKGROUND);
-        editEmitterGui.draw();
+        gui.draw();
     }
 }
 
