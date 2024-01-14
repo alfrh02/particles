@@ -15,17 +15,18 @@ class Emitter : public Entity {
 
         void addParticle(unsigned short num);
         bool canSpawn();
+        vec2 getSpawnPosition();
 
         ParticleType getParticleType();
 
-    private:
+    protected:
         unsigned short _particleNum;
         unsigned short _maxParticles;
 
         float _spawnInterval;
         float _timeSinceLastSpawn;
-        float _range0;
-        float _range1;
+        float _rangeBegin;
+        float _rangeEnd;
         bool _isUsingRange = false;
 
         ParticleType _ptype;

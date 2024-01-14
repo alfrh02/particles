@@ -27,25 +27,30 @@ void ofApp::setup(){
     helpText << "When placing emitters use keys 1-4" << endl;
     helpText << " to switch through particle types " << endl;
     helpText << "" << endl;
+    helpText << "   When in placing mode Emitters  " << endl;
+    helpText << "  be visible, and Particles will  " << endl;
+    helpText << "       show their direction       " << endl;
+    helpText << "" << endl;
     helpText << "Left click to place/move an object" << endl;
     helpText << "       Right click to delete      " << endl;
     helpText << "" << endl;
     helpText << "  Press 'f' to toggle fullscreen  " << endl;
     helpText << " Press 'h' to toggle this message " << endl;
-    helpText << "                ---               " << endl;
-    helpText << "Particle systems are used in games" << endl;
-    helpText << " and other forms of digital media " << endl;
-    helpText << "to depict complex visuals such as " << endl;
-    helpText << "  sparkity, fire, smoke, and   " << endl;
-    helpText << " other kinds of amorphous things. " << endl;
-    helpText << "" << endl;
-    helpText << " There are multiple aspects to a  " << endl;
-    helpText << "   particle system. As the name   " << endl;
-    helpText << "    suggests, an emitter emits    " << endl;
-    helpText << " particles from itself. Particles " << endl;
-    helpText << "  have a set behaviour to follow  " << endl;
-    helpText << "     from equations simple as     " << endl;
-    helpText << "     moving in one direction.     " << endl;
+
+    aboutText << "             <About>              " << endl;
+    aboutText << "Particle systems are used in games" << endl;
+    aboutText << " and other forms of digital media " << endl;
+    aboutText << "to depict complex visuals such as " << endl;
+    aboutText << "  electricity, fire, smoke, and   " << endl;
+    aboutText << " other kinds of amorphous things. " << endl;
+    aboutText << "" << endl;
+    aboutText << " There are multiple aspects to a  " << endl;
+    aboutText << "   particle system. As the name   " << endl;
+    aboutText << "    suggests, an emitter emits    " << endl;
+    aboutText << " particles from itself. Particles " << endl;
+    aboutText << "  have a set behaviour to follow  " << endl;
+    aboutText << "     from equations simple as     " << endl;
+    aboutText << "     moving in one direction.     " << endl;
 }
 
 //--------------------------------------------------------------
@@ -57,7 +62,7 @@ void ofApp::update(){
         e->update(deltaTime);
 
         if (e->canSpawn()) {
-            Particle* p = parseParticleType(e->getParticleType(), e->getPosition());
+            Particle* p = parseParticleType(e->getParticleType(), e->getSpawnPosition());
             particles.push_back(p);
 
             e->addParticle(1);
@@ -86,6 +91,7 @@ void ofApp::update(){
     for (Box* o : boxes) {
         o->update(deltaTime);
     }
+
 }
 
 //--------------------------------------------------------------
@@ -126,24 +132,30 @@ void ofApp::draw(){
             break;
         case emitter:
             s << "Placing Emitter" << endl;
-            switch (ptype) {
-                case bullet:
-                    s << "Type: Bullet" << endl;
-                    break;
-                case smoke:
-                    s << "Type: Smoke" << endl;
-                    break;
-                case spark:
-                    s << "Type: Spark" << endl;
-                    break;
-                case fire:
-                    s << "Type: Fire" << endl;
-                    break;
-            }
+            break;
+        case areaEmitter:
+            s << "Placing Emitter (Area)" << endl;
             break;
         case box:
             s << "Placing Box" << endl;
             break;
+    }
+
+    if (mode == emitter || mode == areaEmitter) {
+        switch (ptype) {
+            case bullet:
+                s << "Type: Bullet" << endl;
+                break;
+            case smoke:
+                s << "Type: Smoke" << endl;
+                break;
+            case spark:
+                s << "Type: Spark" << endl;
+                break;
+            case fire:
+                s << "Type: Fire" << endl;
+                break;
+        }
     }
 
     ofSetColor(COLORS.TEXT);
@@ -151,6 +163,7 @@ void ofApp::draw(){
 
     if (showHelp) {
         ofDrawBitmapStringHighlight(helpText.str().c_str(), vec2(8, 128), COLORS.FOREGROUND, COLORS.BACKGROUND);
+        ofDrawBitmapStringHighlight(aboutText.str().c_str(), vec2(8, 512), COLORS.FOREGROUND, COLORS.BACKGROUND);
     }
 }
 
@@ -164,31 +177,47 @@ void ofApp::keyPressed(int key){
         case 'h':
             showHelp = !showHelp;
             break;
+        case 3682:
+            ctrl = true;
+            break;
+    }
 
-        // changing mode
-        case 'q':
-            mode = view;
-            break;
-        case 'w':
-            mode = emitter;
-            break;
-        case 'e':
-            mode = box;
-            break;
+    if (!ctrl) {
+        switch (key) {
+            case '1':
+                mode = view;
+                break;
+            case '2':
+                mode = emitter;
+                break;
+            case '3':
+                mode = areaEmitter;
+                break;
+            case '4':
+                mode = box;
+                break;
+        }
+    } else {
+        switch (key) {
+            case '1':
+                ptype = bullet;
+                break;
+            case '2':
+                ptype = smoke;
+                break;
+            case '3':
+                ptype = fire;
+                break;
+            case '4':
+                ptype = spark;
+                break;
+        }
+    }
+}
 
-        // changing particle type
-        case '1':
-            ptype = bullet;
-            break;
-        case '2':
-            ptype = smoke;
-            break;
-        case '3':
-            ptype = fire;
-            break;
-        case '4':
-            ptype = spark;
-            break;
+void ofApp::keyReleased(int key) {
+    if (key == 3682) {
+        ctrl = false;
     }
 }
 
@@ -207,58 +236,68 @@ void ofApp::mousePressed(int x, int y, int button){
         }
     }
 
+    for (Emitter* e : emitters) {
+        if (e->getCaptured()) {
+            e->setCaptured(false);
+            mouseCaptured = false;
+            return;
+        }
+    }
+
     if (!mouseCaptured && mode != view) {
         // in each case we are looping through a vector, checking if our mouse's xy coordinates are over each object in the vector.
-        // if we are clicking on an object, the function is prematured ended via `return`
+        // if we are clicking on an object, the function is prematurely ended via `return`
         // if we are not clicking on an object, the function will continue
         // this explains why we are adding new objects at the end of the for loop to the vector we just looped through
+        // we generally do not want multiple actions to be happening for each click, as it becomes a confusing user experience
         switch (mode) {
             case emitter:
+                // check if we are clicking inside a box
+                // if we are, we return as we do not want the player to spawn emitters within a box or interact with emitters by accident
+                for (int i = 0; i < boxes.size(); i++) {
+                    if (boxes[i]->getBoundingBox().inside(vec2(x, y))) {
+                        return;
+                    }
+                }
+                // check if our mouse xy coordinates are within an emitter's radius
                 for (int i = 0; i < emitters.size(); i++) {
                     if (distance(vec2(x, y), emitters[i]->getPosition()) < emitters[i]->getSize()) {
-                        switch (button) {
-                            case 0:
+                        if (button == 0) {
                                 emitters[i]->setCaptured(true);
                                 mouseCaptured = true;
-                                break;
-                            case 2:
+                        } else if (button == 2) {
                                 delete emitters[i];
                                 emitters.erase(emitters.begin() + i);
                         }
-                        return;
+                        return; // we have interacted with an emitter if we reach the end of the above if statement, so we end prematurely
                     }
                 }
-                for (int i = 0; i < boxes.size(); i++) { // we dont want the user to be able to place emitters under boxes
-                    if (boxes[i]->getBoundingBox().inside(vec2(x, y))) {
-                        return;
+                if (button == 0) { // if we are left-clicking we spawn a new emitter
+                    if (ptype == spark) {
+                        emitters.push_back(new Emitter(vec2(x, y), 1, 5, -1, ptype));
+                    } else {
+                        emitters.push_back(new Emitter(vec2(x, y), 0.25, -1, ptype));
                     }
                 }
-                if (button == 0) {
-                        if (ptype == spark) {
-                            emitters.push_back(new Emitter(vec2(x, y), 1, 5, -1, ptype));
-                        } else {
-                            emitters.push_back(new Emitter(vec2(x, y), 0.25, -1, ptype));
-                        }
-                    }
                 break;
             case box:
-                for (int i = boxes.size() - 1; i >= 0; i--) { // iterate backwards so we are interacting with the box on top of the other boxes first
+                // iterate backwards so we are interacting with the box on top of the other boxes first
+                for (int i = boxes.size() - 1; i >= 0; i--) {
                     if (boxes[i]->getBoundingBox().inside(vec2(x, y))) {
-                        switch (button) {
-                            case 0:
+                        if (button == 0) {
                                 boxes[i]->setCaptured(true);
                                 mouseCaptured = true;
-                                break;
-                            case 2:
+                        } else if (button == 2) {
                                 delete boxes[i];
                                 boxes.erase(boxes.begin() + i);
                         }
                         return;
                     }
                 }
+                // create box
                 if (button == 0) {
-                    boxes.push_back(new Box(vec2(x, y), 8, 8, COLORS.FOREGROUND));
-                    mouseCaptured = true;
+                    boxes.push_back(new Box(vec2(x, y)));
+                    mouseCaptured = true; // when we spawn a box, our mouse is occupied with setting the box's width and height, so we set this to true
                 }
                 break;
         }
@@ -286,35 +325,32 @@ void ofApp::mouseReleased(int x, int y, int button){
 
 //--------------------------------------------------------------
 Particle* ofApp::parseParticleType(ParticleType ptype, vec2 emitterPos) {
+    Particle* p;
     switch (ptype) {
         case bullet:
-            return new Particle(
+            p = new Particle(
                 emitterPos,
                 vec2(sin(deltaTime), cos(deltaTime))
             );
             break;
         case smoke:
-            return new SmokeParticle(
+            p = new SmokeParticle(
                 emitterPos,
                 vec2(sin(deltaTime) / 10, ofClamp(cos(deltaTime), -0.01, -1))
             );
             break;
         case fire:
-            return new FireParticle(
+            p = new FireParticle(
                 emitterPos,
                 vec2(sin(deltaTime) / 10, ofClamp(cos(deltaTime), -0.01, -1))
             );
             break;
         case spark:
-            return new SparkParticle(
+            p = new SparkParticle(
                 emitterPos,
                 vec2(ofRandom(0.2) - 0.1, ofRandom(-1))
             );
             break;
     }
-    // VV this particle should not spawn
-    return new Particle(
-        emitterPos,
-        vec2(sin(deltaTime), cos(deltaTime)) // starting position
-    );
+    return p;
 }

@@ -18,12 +18,11 @@ New particle types can be easily deployed by anybody with some rudimentary progr
     - [x] Smoke
     - [x] Electricity
     - [x] Fire
-    - [ ] Smoke & Fire
     - [ ] Rain
     - [ ] Galaxy
     - [ ] Boids
     - [ ] Stars?
-- [ ] 2D objects for particles to interact with
+- [x] 2D objects for particles to interact with
     - [ ] Objects that are:
         - [x] Placeable
         - [ ] Rotatable

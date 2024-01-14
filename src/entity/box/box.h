@@ -4,13 +4,11 @@
 
 class Box : public Entity {
     public:
-        Box(vec2 pos, float w, float h, ofColor col);
+        Box(vec2 pos);
 
         void update(double deltaTime);
         void draw() override;
         void drawEditMode() override;
-
-        void editMesh();
 
         ofRectangle getBoundingBox();
 

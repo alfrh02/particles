@@ -1,7 +1,8 @@
 #pragma once
+
 //--------------------------------------------------------------
 const struct {
-    ofColor WHITE = ofColor(196);
+    ofColor WHITE = ofColor(190, 190, 208);
     ofColor GRAY = ofColor(32);
     ofColor DARK_GRAY = ofColor(96);
     ofColor BLACK = ofColor(0);
@@ -18,7 +19,6 @@ const struct {
 
     ofColor TEXT = BLACK;
 
-    ofColor DIRECTION = BLACK;
     ofColor BOUNDING_BOX = RED;
 
     unsigned char SMOKE_ALPHA = 128;

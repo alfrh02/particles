@@ -24,22 +24,26 @@ class ofApp : public ofBaseApp{
 		void draw();
 
 		void keyPressed(int key);
+		void keyReleased(int key);
+
+		bool ctrl = false;
 
 		void mousePressed(int x, int y, int button);
 		void mouseReleased(int x, int y, int button);
 
-		Particle* parseParticleType(ParticleType ptype, vec2 emitterPos);
-		ParticleType ptype = bullet;
+		bool mouseCaptured = false;
 
 		double deltaTime = 0;
 
-		enum Mode { view, emitter, box };
+		Particle* parseParticleType(ParticleType ptype, vec2 emitterPos);
+		ParticleType ptype = bullet;
+
+		enum Mode { view, emitter, box, areaEmitter };
 		Mode mode = view;
 
 		bool showHelp = true;
-		bool mouseCaptured = false;
-
 		stringstream helpText;
+		stringstream aboutText;
 
 		vector<Emitter*> emitters;
 		vector<Particle*> particles;

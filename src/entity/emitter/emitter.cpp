@@ -14,12 +14,11 @@ Emitter::Emitter(vec2 pos, float spawnInterval, unsigned short maxParticles, Par
 Emitter::Emitter(vec2 pos, float spawnInterval, float rangeSpawnInterval, unsigned short maxParticles, ParticleType ptype)
 : Emitter(pos, spawnInterval, maxParticles, ptype){
     _isUsingRange = true;
-    _range0 = spawnInterval;
-    _range1 = rangeSpawnInterval;
+    _rangeBegin = spawnInterval;
+    _rangeEnd = rangeSpawnInterval;
 }
 
 void Emitter::update(double deltaTime) {
-    cout << _isUsingRange << endl;
     _timeSinceLastSpawn += ofGetLastFrameTime();
 
     if (_captured) {
@@ -29,14 +28,14 @@ void Emitter::update(double deltaTime) {
 
 void Emitter::drawEditMode() {
     ofSetColor(COLORS.FOREGROUND);
+
     if (_captured) {
         ofSetColor(COLORS.HIGHLIGHT);
     }
 
+    ofNoFill();
     ofDrawCircle(_position, _size);
-
-    ofSetColor(COLORS.BACKGROUND);
-    ofDrawCircle(_position, _size-1);
+    ofFill();
 }
 
 void Emitter::addParticle(unsigned short num) {
@@ -47,11 +46,15 @@ bool Emitter::canSpawn() {
     if (_timeSinceLastSpawn >= _spawnInterval && _particleNum + 1 <= _maxParticles) {
         _timeSinceLastSpawn = 0;
         if (_isUsingRange) {
-            _spawnInterval = ofRandom(_range1 - _range0) + _range0;
+            _spawnInterval = ofRandom(_rangeEnd - _rangeBegin) + _rangeBegin;
         }
         return true;
     }
     return false;
+}
+
+vec2 Emitter::getSpawnPosition() {
+    return _position;
 }
 
 ParticleType Emitter::getParticleType() {
