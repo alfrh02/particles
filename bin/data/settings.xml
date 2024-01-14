@@ -1,4 +1,7 @@
 <?xml version="1.0"?>
 <group>
 	<Spawn_Interval>6.6383</Spawn_Interval>
+	<Using_range>0</Using_range>
+	<Spawn_Range>16.2</Spawn_Range>
+	<Max_Particles>-1</Max_Particles>
 </group>

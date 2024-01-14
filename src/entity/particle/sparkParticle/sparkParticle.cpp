@@ -7,11 +7,10 @@ SparkParticle::SparkParticle(vec2 pos, vec2 dir, float size, float speed, unsign
 void SparkParticle::update(double deltaTime) {
     _position += _speed * _direction * 1/ofGetFrameRate();
 
-    if (_direction.y != -1) {
-        _direction.y += (_speed / 8) * 1/ofGetFrameRate();
+    if (_direction.y < 1) {
+        _direction.y += _speed * 1/ofGetFrameRate();
         _direction = normalize(_direction);
     }
-
     _lifetime += ofGetLastFrameTime();
 }
 

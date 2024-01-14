@@ -29,16 +29,22 @@ class ofApp : public ofBaseApp{
 		void keyPressed(int key);
 		void keyReleased(int key);
 
-		bool ctrl = false;
-
 		void mousePressed(int x, int y, int button);
 		void mouseReleased(int x, int y, int button);
 
-		bool mouseCaptured = false;
+		void updateGui(Emitter* e);
 
 		Particle* parseParticleType(ParticleType ptype, vec2 emitterPos);
 
+		void setSelectedSpawnInterval(float& spawnInterval);
+        void setSelectedUsingRange(bool& usingRange);
+		void setSelectedSpawnRangeEnd(float& spawnRange);
+		void setSelectedMaxParticles(int& maxParticles);
+
 		double deltaTime = 0;
+
+		bool ctrl = false;
+		bool mouseCaptured = false;
 
 		enum Mode { view, emitter, box, areaEmitter };
 		Mode mode = view;
@@ -46,6 +52,7 @@ class ofApp : public ofBaseApp{
 		bool showHelp = true;
 		stringstream helpText;
 		stringstream aboutText;
+		string mouseText;
 
 		struct EmitterPreset {
 			float spawnIntervalRangeBegin = 0.25;
@@ -66,4 +73,12 @@ class ofApp : public ofBaseApp{
 		vector<Emitter*>  emitters;
 		vector<Particle*> particles;
 		vector<Box*>      boxes;
+
+		ofxPanel editEmitterGui;
+		ofParameter<float> guiSpawnInterval;
+		ofParameter<bool> guiIsUsingRange;
+		ofParameter<float> guiSpawnRange;
+		ofParameter<int> guiMaxParticles;
+
+		Emitter* selectedEmitter;
 };

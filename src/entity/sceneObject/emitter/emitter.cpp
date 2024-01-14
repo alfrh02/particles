@@ -11,7 +11,7 @@ Emitter::Emitter(vec2 pos, float spawnIntervalRangeBegin, float spawnIntervalRan
     _timeSinceLastSpawn = 0;
 
     _isUsingRange = false;
-    _rangeBegin = 0;
+    _rangeBegin = spawnIntervalRangeBegin;
     _rangeEnd = 0;
 
     if (spawnIntervalRangeBegin != spawnIntervalRangeEnd) {
@@ -19,6 +19,9 @@ Emitter::Emitter(vec2 pos, float spawnIntervalRangeBegin, float spawnIntervalRan
         _rangeBegin = spawnIntervalRangeBegin;
         _rangeEnd = spawnIntervalRangeEnd;
     }
+
+    _boundingBox = ofRectangle(pos, _size * 2, _size * 2);
+    _boundingBox.setPosition(_position.x - _size, _position.y - _size);
 }
 
 // take only one spawnInterval argument, and pass it onto the constructor as if there were two
@@ -33,8 +36,7 @@ void Emitter::update(double deltaTime) {
 
     if (_captured) {
         _position = vec2(ofGetMouseX(), ofGetMouseY());
-        _rect.setPosition(_position.x, _position.y);
-        _boundingBox.setPosition(_position.x, _position.y);
+        _boundingBox.setPosition(_position.x - _size, _position.y - _size);
     }
 }
 
@@ -71,4 +73,38 @@ vec2 Emitter::getSpawnPosition() {
 
 ParticleType Emitter::getParticleType() {
     return _ptype;
+}
+
+void Emitter::setSpawnInterval(float spawnInterval) {
+    _spawnInterval = spawnInterval;
+    _rangeBegin = spawnInterval;
+}
+
+void Emitter::setSpawnRangeEnd(float spawnRangeEnd) {
+    _rangeEnd = spawnRangeEnd;
+}
+
+void Emitter::setUsingRange(bool range) {
+    cout << range << endl;
+    _isUsingRange = range;
+}
+
+void Emitter::setMaxParticles(int maxParticles) {
+    _maxParticles = maxParticles;
+}
+
+float Emitter::getSpawnRangeBegin() {
+    return _rangeBegin;
+}
+
+float Emitter::getSpawnRangeEnd() {
+    return _rangeEnd;
+}
+
+float Emitter::getIsUsingRange() {
+    return _isUsingRange;
+}
+
+unsigned int Emitter::getMaxParticles() {
+    return _maxParticles;
 }

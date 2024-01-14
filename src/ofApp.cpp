@@ -17,6 +17,20 @@ ofApp::~ofApp(){
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    // -------- gui setup
+
+    editEmitterGui.setup("Edit Emitter");
+    editEmitterGui.add(guiSpawnInterval.set("Spawn Interval", 0.25, 0, 30));
+    editEmitterGui.add(guiIsUsingRange.set("Using range", false, 18, 18));
+    editEmitterGui.add(guiSpawnRange.set("Spawn Range", 0, 0, 30));
+    editEmitterGui.add(guiMaxParticles.set("Max Particles", -1, -1, 1024));
+
+    guiSpawnInterval.addListener(this, &ofApp::setSelectedSpawnInterval);
+    guiIsUsingRange.addListener(this, &ofApp::setSelectedUsingRange);
+    guiSpawnRange.addListener(this, &ofApp::setSelectedSpawnRangeEnd);
+    guiMaxParticles.addListener(this, &ofApp::setSelectedMaxParticles);
+
+    // -------- emitter presets
 	smokePreset.ptype = smoke;
 
 	firePreset.ptype  = fire;
@@ -35,6 +49,7 @@ void ofApp::setup(){
     rainPreset.spawnIntervalRangeBegin  = 0;
     rainPreset.spawnIntervalRangeEnd    = 1;
 
+    // -------- help text, about text
     helpText << "       <Particle Simulator>       " << endl;
     helpText << " Use keys q, w & e to switch mode " << endl;
     helpText << "" << endl;
@@ -144,23 +159,27 @@ void ofApp::draw(){
     s << to_string(ofGetMouseX()) << ", " << to_string(ofGetMouseY()) << endl;
     s << "\nCurrent Mode: ";
 
+    string text;
+    mouseText = "";
     switch (mode) {
         case view:
-            s << "View" << endl;
+            text = "View";
             break;
         case emitter:
-            s << "Placing Emitter" << endl;
+            text = "Placing Emitter";
             break;
         case areaEmitter:
-            s << "Placing Emitter (Area)" << endl;
+            text = "Placing Emitter (Area)";
             break;
         case box:
-            s << "Placing Box" << endl;
+            text = "Placing Box";
             break;
     }
 
+    mouseText += text;
+    s << text << endl;
+
     if (mode == emitter || mode == areaEmitter) {
-        string text;
         switch (emitterType.ptype) {
             case bullet:
                 text = "Type: Bullet";
@@ -181,18 +200,24 @@ void ofApp::draw(){
                 text = "Type: Bubble";
                 break;
         }
-        // each character is 8px wide & 11px tall
-        // centre text right under cursor so as to not obstruct the user's view
-        ofDrawBitmapStringHighlight(text, vec2(ofGetMouseX() - ((text.length() * 8) / 2), ofGetMouseY() + 33), COLORS.FOREGROUND, COLORS.BACKGROUND);
+        mouseText += "\n" + text;
         s << text << endl;
     }
 
     ofSetColor(COLORS.FOREGROUND);
+
     ofDrawBitmapString(s.str().c_str(), vec2(8, 16));
 
     if (showHelp) {
         ofDrawBitmapStringHighlight(helpText.str().c_str(), vec2(8, 128), COLORS.FOREGROUND, COLORS.BACKGROUND);
         ofDrawBitmapStringHighlight(aboutText.str().c_str(), vec2(8, 512), COLORS.FOREGROUND, COLORS.BACKGROUND);
+    }
+
+    if (mode != view) {
+        // each character is 8px wide & 11px tall
+        // centre text right under cursor so as to not obstruct the user's view
+        ofDrawBitmapStringHighlight(mouseText, vec2(ofGetMouseX() - ((text.length() * 8) / 2), ofGetMouseY() + 44), COLORS.FOREGROUND, COLORS.BACKGROUND);
+        editEmitterGui.draw();
     }
 }
 
@@ -296,11 +321,13 @@ void ofApp::mousePressed(int x, int y, int button){
                 for (int i = 0; i < emitters.size(); i++) {
                     if (emitters[i]->getBoundingBox().inside(vec2(x, y))) {
                         if (button == 0) {
-                                emitters[i]->setCaptured(true);
-                                mouseCaptured = true;
+                            emitters[i]->setCaptured(true);
+                            mouseCaptured = true;
+                            selectedEmitter = emitters[i];
+                            updateGui(emitters[i]);
                         } else if (button == 2) {
-                                delete emitters[i];
-                                emitters.erase(emitters.begin() + i);
+                            delete emitters[i];
+                            emitters.erase(emitters.begin() + i);
                         }
                         return; // we have interacted with an emitter if we reach the end of the above if statement, so we end prematurely
                     }
@@ -317,17 +344,18 @@ void ofApp::mousePressed(int x, int y, int button){
                     e = new AreaEmitter(vec2(x, y), emitterType.spawnIntervalRangeBegin, emitterType.spawnIntervalRangeEnd, emitterType.maxParticles, emitterType.ptype);
                 }
                 emitters.push_back(e);
+                selectedEmitter = emitters[emitters.size() - 1];
                 break;
             case box:
                 // iterate backwards so we are interacting with the box on top of the other boxes first
                 for (int i = boxes.size() - 1; i >= 0; i--) {
                     if (boxes[i]->getBoundingBox().inside(vec2(x, y))) {
                         if (button == 0) {
-                                boxes[i]->setCaptured(true);
-                                mouseCaptured = true;
+                            boxes[i]->setCaptured(true);
+                            mouseCaptured = true;
                         } else if (button == 2) {
-                                delete boxes[i];
-                                boxes.erase(boxes.begin() + i);
+                            delete boxes[i];
+                            boxes.erase(boxes.begin() + i);
                         }
                         return;
                     }
@@ -403,4 +431,32 @@ Particle* ofApp::parseParticleType(ParticleType ptype, vec2 emitterPos) {
             break;
     }
     return p;
+}
+
+void ofApp::updateGui(Emitter* e) {
+    guiSpawnInterval = e->getSpawnRangeBegin();
+    guiIsUsingRange = e->getIsUsingRange();
+    guiSpawnRange = e->getSpawnRangeEnd();
+    guiMaxParticles = e->getMaxParticles();
+    if (guiMaxParticles > 1024) {
+        guiMaxParticles = -1;
+    }
+}
+
+void ofApp::setSelectedSpawnInterval(float& spawnInterval) {
+    selectedEmitter->setSpawnInterval(spawnInterval);
+}
+
+void ofApp::setSelectedUsingRange(bool& usingRange) {
+    selectedEmitter->setUsingRange(usingRange);
+}
+
+void ofApp::setSelectedSpawnRangeEnd(float& spawnRange) {
+    if (guiIsUsingRange) {
+        selectedEmitter->setSpawnRangeEnd(spawnRange);
+    }
+}
+
+void ofApp::setSelectedMaxParticles(int& maxParticles) {
+    selectedEmitter->setMaxParticles(maxParticles);
 }

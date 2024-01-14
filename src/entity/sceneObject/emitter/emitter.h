@@ -6,7 +6,7 @@
 
 class Emitter : public SceneObject {
     public:
-        Emitter(vec2 pos, float spawnIntervalRangeBegin, float spawnIntervalRangeEnd, unsigned short maxParticles, ParticleType ptype);
+        Emitter(vec2 pos, float spawnRangeBegin, float spawnRangeEnd, unsigned short maxParticles, ParticleType ptype);
         Emitter(vec2 pos, float spawnInterval, unsigned short maxParticles, ParticleType ptype);
 
         void update(double deltaTime) override;
@@ -14,8 +14,18 @@ class Emitter : public SceneObject {
 
         void addParticle(unsigned short num);
         bool canSpawn();
-        virtual vec2 getSpawnPosition();
 
+        void setSpawnInterval(float spawnInterval);
+        void setSpawnRangeEnd(float spawnRangeEnd);
+        void setUsingRange(bool range);
+        void setMaxParticles(int maxParticles);
+
+        float getSpawnRangeBegin();
+        float getSpawnRangeEnd();
+        float getIsUsingRange();
+        unsigned int getMaxParticles();
+
+        virtual vec2 getSpawnPosition();
         ParticleType getParticleType();
 
     protected:
@@ -26,7 +36,7 @@ class Emitter : public SceneObject {
         float _timeSinceLastSpawn;
         float _rangeBegin;
         float _rangeEnd;
-        bool _isUsingRange = false;
+        bool _isUsingRange;
 
         ParticleType _ptype;
 };

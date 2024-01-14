@@ -9,6 +9,8 @@ class Box : public SceneObject {
         void update(double deltaTime);
         void draw() override;
 
+        void setRotation(float rotation);
+
     private:
         bool _editing;
 };

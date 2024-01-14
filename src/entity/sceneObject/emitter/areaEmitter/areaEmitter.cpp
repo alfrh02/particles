@@ -27,8 +27,8 @@ void AreaEmitter::update(double deltaTime) {
         _height = ofGetMouseY() - _position.y;
 
         if ((_width < 2 && _width > -2) || (_height < 2 && _height > -2)) {
-            _width = 5;
-            _height = 5;
+            _width = 16;
+            _height = 16;
         }
 
         _rect = ofRectangle(_position, _width, _height);
