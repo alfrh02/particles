@@ -158,7 +158,7 @@ void ofApp::draw(){
         }
     }
 
-    ofSetColor(COLORS.TEXT);
+    ofSetColor(COLORS.FOREGROUND);
     ofDrawBitmapString(s.str().c_str(), vec2(8, 16));
 
     if (showHelp) {
@@ -252,6 +252,7 @@ void ofApp::mousePressed(int x, int y, int button){
         // we generally do not want multiple actions to be happening for each click, as it becomes a confusing user experience
         switch (mode) {
             case emitter:
+            case areaEmitter:
                 // check if we are clicking inside a box
                 // if we are, we return as we do not want the player to spawn emitters within a box or interact with emitters by accident
                 for (int i = 0; i < boxes.size(); i++) {
@@ -259,9 +260,9 @@ void ofApp::mousePressed(int x, int y, int button){
                         return;
                     }
                 }
-                // check if our mouse xy coordinates are within an emitter's radius
+                // check if our mouse xy coordinates are within an emitter's bounding box
                 for (int i = 0; i < emitters.size(); i++) {
-                    if (distance(vec2(x, y), emitters[i]->getPosition()) < emitters[i]->getSize()) {
+                    if (emitters[i]->getBoundingBox().inside(vec2(x, y))) {
                         if (button == 0) {
                                 emitters[i]->setCaptured(true);
                                 mouseCaptured = true;
@@ -272,12 +273,19 @@ void ofApp::mousePressed(int x, int y, int button){
                         return; // we have interacted with an emitter if we reach the end of the above if statement, so we end prematurely
                     }
                 }
-                if (button == 0) { // if we are left-clicking we spawn a new emitter
+
+                if (button != 0) {
+                    return;
+                }
+
+                if (mode == emitter) { // if we are left-clicking we spawn a new emitter
                     if (ptype == spark) {
                         emitters.push_back(new Emitter(vec2(x, y), 1, 5, -1, ptype));
                     } else {
                         emitters.push_back(new Emitter(vec2(x, y), 0.25, -1, ptype));
                     }
+                } else {
+                    emitters.push_back(new AreaEmitter(vec2(x, y), 0.25, -1, ptype));
                 }
                 break;
             case box:

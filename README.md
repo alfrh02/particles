@@ -27,7 +27,7 @@ New particle types can be easily deployed by anybody with some rudimentary progr
         - [x] Placeable
         - [ ] Rotatable
     - [x] Collision detection
-- [ ] Additional Emitter behaviour
+- [x] Additional Emitter behaviour
     ~~- [ ] GUI Elements~~
-    - [ ] Spawn area
-        - [ ] Emitter turns into a rectangle, where user can specify width/height, Particle objects will spawn randomly within that rectangle
+    - [x] Spawn area
+        - [x] Emitter turns into a rectangle, where user can specify width/height, Particle objects will spawn randomly within that rectangle

@@ -10,6 +10,7 @@
 #include "fireParticle.h"
 
 #include "emitter.h"
+#include "areaEmitter.h"
 #include "box.h"
 
 using namespace glm;
