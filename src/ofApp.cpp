@@ -50,12 +50,16 @@ void ofApp::setup(){
     rainPreset.spawnIntervalRangeBegin  = 0.01;
     rainPreset.spawnIntervalRangeEnd    = 0.05;
 
-    rainPreset.ptype  = bubble;
-    rainPreset.spawnIntervalRangeBegin  = 0;
-    rainPreset.spawnIntervalRangeEnd    = 1;
+    bubblePreset.ptype  = bubble;
+    bubblePreset.spawnIntervalRangeBegin  = 0;
+    bubblePreset.spawnIntervalRangeEnd    = 1;
 
     // -------- help text, about text
-    helpText << "       <Particle Simulator>       " << endl;
+    helpText << "       <Particle Simulator>       " << endl;rain
+    helpText << "" << endl;
+    helpText << "If you are unfamiliar with the    " << endl;
+    helpText << "concept of a particle system, view" << endl;
+    helpText << "the text on the right." << endl;
     helpText << "" << endl;
     helpText << "Use keys 1-4 to switch mode.      " << endl;
     helpText << "" << endl;
@@ -113,6 +117,7 @@ void ofApp::setup(){
     helpText << "Press 'h' to toggle this message " << endl;
 
     aboutText << "    <About Particle Systems>      " << endl;
+    aboutText << "" << endl;
     aboutText << "Particle systems are used in games" << endl;
     aboutText << "and other forms of digital media  " << endl;
     aboutText << "to depict complex visuals such as " << endl;
@@ -120,15 +125,29 @@ void ofApp::setup(){
     aboutText << "other kinds of amorphous things.  " << endl;
     aboutText << "" << endl;
     aboutText << "A particle is a type of entity    " << endl;
-    aboutText << "that is used to represent a small " << endl;
-    aboutText << "object. Particles are kept very   " << endl;
-    aboutText << "simple for computational reasons, " << endl;
-    aboutText << "as many particles are often needed" << endl;
-    aboutText << "to represent complex environments." << endl;
+    aboutText << "that is used to represent         " << endl;
+    aboutText << "something small. Particles are    " << endl;
+    aboutText << "used in groups to make up a       " << endl;
+    aboutText << "collective. This collective may   " << endl;
+    aboutText << "take the form of something from   " << endl;
+    aboutText << "real life such as fire; smoke;    " << endl;
+    aboutText << "or electricity, or it may         " << endl;
+    aboutText << "be used for something fictitious  " << endl;
+    aboutText << "such as magic." << endl;
     aboutText << "" << endl;
-    aboutText << "Particle emitters are points in   " << endl;
-    aboutText << "space that are the staging point  " << endl;
-    aboutText << "for particles to spawn at." << endl;
+    aboutText << "You may note in this example that " << endl;
+    aboutText << "particles are not physically      " << endl;
+    aboutText << "interacting with eachother. In    " << endl;
+    aboutText << "most cases particles only interact" << endl;
+    aboutText << "with their 3D environment rather  " << endl;
+    aboutText << "than eachother to save            " << endl;
+    aboutText << "computational resources." << endl;
+    aboutText << "" << endl;
+    aboutText << "Particles are produced from       " << endl;
+    aboutText << "emitters, which are points in     " << endl;
+    aboutText << "space that act as the staging     " << endl;
+    aboutText << "for particles to begin their      " << endl;
+    aboutText << "simulation." << endl;
 }
 
 //--------------------------------------------------------------
@@ -255,7 +274,7 @@ void ofApp::draw(){
 
     if (mode != view) {
         // centre text right under cursor so as to not obstruct the user's view
-        ofDrawBitmapStringHighlight(mouseText, vec2(ofGetMouseX() - ((text.length() * 8) / 2), ofGetMouseY() + 44), COLORS.FOREGROUND, COLORS.BACKGROUND);
+        ofDrawBitmapStringHighlight(mouseText, vec2(ofGetMouseX() - 6 * 8, ofGetMouseY() + 44), COLORS.FOREGROUND, COLORS.BACKGROUND);
         gui.draw();
     }
 }
@@ -306,6 +325,9 @@ void ofApp::keyPressed(int key){
                 break;
             case '5':
                 emitterType = rainPreset;
+                break;
+            case '6':
+                emitterType = bubblePreset;
                 break;
         }
     }

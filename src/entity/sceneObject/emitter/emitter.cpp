@@ -85,7 +85,6 @@ void Emitter::setSpawnRangeEnd(float spawnRangeEnd) {
 }
 
 void Emitter::setUsingRange(bool range) {
-    cout << range << endl;
     _isUsingRange = range;
 }
 
