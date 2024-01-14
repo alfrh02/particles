@@ -2,14 +2,14 @@
 
 SparkParticle::SparkParticle(vec2 pos, vec2 dir, float size, float speed, unsigned short lifespan, ofColor col)
 : Particle(pos, dir, size, speed, lifespan, col) {
-    _type = "Spark";
 }
 
 void SparkParticle::update(double deltaTime) {
     _position += _speed * _direction * 1/ofGetFrameRate();
 
-    if (_direction.y < 0.98) {
+    if (_direction.y != -1) {
         _direction.y += (_speed / 8) * 1/ofGetFrameRate();
+        _direction = normalize(_direction);
     }
 
     _lifetime += ofGetLastFrameTime();

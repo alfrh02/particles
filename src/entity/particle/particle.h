@@ -2,6 +2,8 @@
 
 #include "entity.h"
 
+enum ParticleType { bullet, smoke, fire, spark, rain, bubble };
+
 class Particle : public Entity {
     public:
         Particle(vec2 pos = vec2(0, 0), vec2 dir = vec2(0, 0), float size = 1, float speed = 100, unsigned short lifespan = -1, ofColor col = COLORS.FOREGROUND);
@@ -18,8 +20,6 @@ class Particle : public Entity {
         float getLifetime();
 
     protected:
-        string _type;
-
         float _lifetime;
         unsigned short _lifespan; // we keep this as an unsigned short so that we can pass -1 as an argument to mean practically infinite
 };

@@ -1,15 +1,14 @@
 #include "areaEmitter.h"
 
-AreaEmitter::AreaEmitter(vec2 pos, float spawnInterval, unsigned short maxParticles, ParticleType ptype)
-: Emitter(pos, spawnInterval, maxParticles, ptype) {
+AreaEmitter::AreaEmitter(vec2 pos, float spawnIntervalRangeBegin, float spawnIntervalRangeEnd, unsigned short maxParticles, ParticleType ptype)
+: Emitter(pos, spawnIntervalRangeBegin, spawnIntervalRangeEnd, maxParticles, ptype) {
     _editing = true;
     _captured = true;
 }
 
-AreaEmitter::AreaEmitter(vec2 pos, float spawnInterval, float rangeSpawnInterval, unsigned short maxParticles, ParticleType ptype)
-: Emitter(pos, spawnInterval, rangeSpawnInterval, maxParticles, ptype) {
-    _editing = true;
-    _captured = true;
+AreaEmitter::AreaEmitter(vec2 pos, float spawnInterval, unsigned short maxParticles, ParticleType ptype)
+:AreaEmitter(pos, spawnInterval, spawnInterval, maxParticles, ptype) {
+
 }
 
 void AreaEmitter::update(double deltaTime) {

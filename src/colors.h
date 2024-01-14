@@ -1,10 +1,9 @@
 #pragma once
 
-//--------------------------------------------------------------
 const struct {
     ofColor FOREGROUND = ofColor(0);             // black
     ofColor BACKGROUND = ofColor(190, 190, 208); // blue-tinted white
-    ofColor HIGHLIGHT = ofColor(255, 32, 32);    // red
+    ofColor HIGHLIGHT  = ofColor(255, 32, 32);    // red
 
     unsigned char SMOKE_ALPHA = 128;
     ofColor SMOKE[5] = {                         // varying levels of gray
@@ -23,7 +22,9 @@ const struct {
         ofColor(160, 30,  8,   SMOKE_ALPHA)
     };
 
-    ofColor SPARK = ofColor(255, 255, 0);        // yellow
+    ofColor SPARK  = ofColor(255, 255, 0);        // yellow
 
-    ofColor RAIN = ofColor(12, 64, 190);         // blue
+    ofColor RAIN   = ofColor(96, 128, 200);       // blue
+
+    ofColor BUBBLE = ofColor(100, 125, 150);      // light blue
 } COLORS;

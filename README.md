@@ -18,16 +18,14 @@ New particle types can be easily deployed by anybody with some rudimentary progr
     - [x] Smoke
     - [x] Electricity
     - [x] Fire
-    - [ ] Rain
-    - [ ] Galaxy
-    - [ ] Boids
-    - [ ] Stars?
+    - [x] Rain
+    - [ ] Explosion
 - [x] 2D objects for particles to interact with
     - [ ] Objects that are:
         - [x] Placeable
         - [ ] Rotatable
     - [x] Collision detection
 - [x] Additional Emitter behaviour
-    ~~- [ ] GUI Elements~~
+    - [ ] GUI Elements
     - [x] Spawn area
         - [x] Emitter turns into a rectangle, where user can specify width/height, Particle objects will spawn randomly within that rectangle

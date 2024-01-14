@@ -1,21 +1,31 @@
 #include "emitter.h"
 
-Emitter::Emitter(vec2 pos, float spawnInterval, unsigned short maxParticles, ParticleType ptype)
+Emitter::Emitter(vec2 pos, float spawnIntervalRangeBegin, float spawnIntervalRangeEnd, unsigned short maxParticles, ParticleType ptype)
 : SceneObject(pos, 8){
-    _spawnInterval = spawnInterval;
+    _spawnInterval = spawnIntervalRangeBegin;
     _particleNum = 0;
     _maxParticles = maxParticles;
     _ptype = ptype;
 
     _captured = false;
     _timeSinceLastSpawn = 0;
+
+    _isUsingRange = false;
+    _rangeBegin = 0;
+    _rangeEnd = 0;
+
+    if (spawnIntervalRangeBegin != spawnIntervalRangeEnd) {
+        _isUsingRange = true;
+        _rangeBegin = spawnIntervalRangeBegin;
+        _rangeEnd = spawnIntervalRangeEnd;
+    }
 }
 
-Emitter::Emitter(vec2 pos, float spawnInterval, float rangeSpawnInterval, unsigned short maxParticles, ParticleType ptype)
-: Emitter(pos, spawnInterval, maxParticles, ptype){
-    _isUsingRange = true;
-    _rangeBegin = spawnInterval;
-    _rangeEnd = rangeSpawnInterval;
+// take only one spawnInterval argument, and pass it onto the constructor as if there were two
+// basically circumvent the "range" mechanic
+Emitter::Emitter(vec2 pos, float spawnInterval, unsigned short maxParticles, ParticleType ptype)
+:Emitter(pos, spawnInterval, spawnInterval, maxParticles, ptype) {
+
 }
 
 void Emitter::update(double deltaTime) {

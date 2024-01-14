@@ -8,6 +8,8 @@
 #include "smokeParticle.h"
 #include "sparkParticle.h"
 #include "fireParticle.h"
+#include "rainParticle.h"
+#include "bubbleParticle.h"
 
 #include "emitter.h"
 #include "areaEmitter.h"
@@ -34,10 +36,9 @@ class ofApp : public ofBaseApp{
 
 		bool mouseCaptured = false;
 
-		double deltaTime = 0;
-
 		Particle* parseParticleType(ParticleType ptype, vec2 emitterPos);
-		ParticleType ptype = bullet;
+
+		double deltaTime = 0;
 
 		enum Mode { view, emitter, box, areaEmitter };
 		Mode mode = view;
@@ -46,7 +47,23 @@ class ofApp : public ofBaseApp{
 		stringstream helpText;
 		stringstream aboutText;
 
-		vector<Emitter*> emitters;
+		struct EmitterPreset {
+			float spawnIntervalRangeBegin = 0.25;
+			float spawnIntervalRangeEnd = 0.25;
+			unsigned short maxParticles = -1;
+			ParticleType ptype = bullet;
+		};
+
+		EmitterPreset bulletPreset;
+		EmitterPreset smokePreset;
+		EmitterPreset firePreset;
+		EmitterPreset sparkPreset;
+		EmitterPreset rainPreset;
+		EmitterPreset bubblePreset;
+
+		EmitterPreset emitterType = bulletPreset;
+
+		vector<Emitter*>  emitters;
 		vector<Particle*> particles;
-		vector<Box*> boxes;
+		vector<Box*>      boxes;
 };

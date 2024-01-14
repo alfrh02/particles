@@ -17,6 +17,24 @@ ofApp::~ofApp(){
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+	smokePreset.ptype = smoke;
+
+	firePreset.ptype  = fire;
+    firePreset.spawnIntervalRangeBegin  = 0.1;
+    firePreset.spawnIntervalRangeEnd    = 0.1;
+
+	sparkPreset.ptype = spark;
+    sparkPreset.spawnIntervalRangeBegin = 1;
+    sparkPreset.spawnIntervalRangeEnd   = 3;
+
+    rainPreset.ptype  = rain;
+    rainPreset.spawnIntervalRangeBegin  = 0.01;
+    rainPreset.spawnIntervalRangeEnd    = 0.05;
+
+    rainPreset.ptype  = bubble;
+    rainPreset.spawnIntervalRangeBegin  = 0;
+    rainPreset.spawnIntervalRangeEnd    = 1;
+
     helpText << "       <Particle Simulator>       " << endl;
     helpText << " Use keys q, w & e to switch mode " << endl;
     helpText << "" << endl;
@@ -142,20 +160,31 @@ void ofApp::draw(){
     }
 
     if (mode == emitter || mode == areaEmitter) {
-        switch (ptype) {
+        string text;
+        switch (emitterType.ptype) {
             case bullet:
-                s << "Type: Bullet" << endl;
+                text = "Type: Bullet";
                 break;
             case smoke:
-                s << "Type: Smoke" << endl;
+                text = "Type: Smoke";
                 break;
             case spark:
-                s << "Type: Spark" << endl;
+                text = "Type: Spark";
                 break;
             case fire:
-                s << "Type: Fire" << endl;
+                text = "Type: Fire";
+                break;
+            case rain:
+                text = "Type: Rain";
+                break;
+            case bubble:
+                text = "Type: Bubble";
                 break;
         }
+        // each character is 8px wide & 11px tall
+        // centre text right under cursor so as to not obstruct the user's view
+        ofDrawBitmapStringHighlight(text, vec2(ofGetMouseX() - ((text.length() * 8) / 2), ofGetMouseY() + 33), COLORS.FOREGROUND, COLORS.BACKGROUND);
+        s << text << endl;
     }
 
     ofSetColor(COLORS.FOREGROUND);
@@ -200,16 +229,19 @@ void ofApp::keyPressed(int key){
     } else {
         switch (key) {
             case '1':
-                ptype = bullet;
+                emitterType = bulletPreset;
                 break;
             case '2':
-                ptype = smoke;
+                emitterType = smokePreset;
                 break;
             case '3':
-                ptype = fire;
+                emitterType = firePreset;
                 break;
             case '4':
-                ptype = spark;
+                emitterType = sparkPreset;
+                break;
+            case '5':
+                emitterType = rainPreset;
                 break;
         }
     }
@@ -278,15 +310,13 @@ void ofApp::mousePressed(int x, int y, int button){
                     return;
                 }
 
+                Emitter* e;
                 if (mode == emitter) { // if we are left-clicking we spawn a new emitter
-                    if (ptype == spark) {
-                        emitters.push_back(new Emitter(vec2(x, y), 1, 5, -1, ptype));
-                    } else {
-                        emitters.push_back(new Emitter(vec2(x, y), 0.25, -1, ptype));
-                    }
+                    e = new Emitter(vec2(x, y), emitterType.spawnIntervalRangeBegin, emitterType.spawnIntervalRangeEnd, emitterType.maxParticles, emitterType.ptype);
                 } else {
-                    emitters.push_back(new AreaEmitter(vec2(x, y), 0.25, -1, ptype));
+                    e = new AreaEmitter(vec2(x, y), emitterType.spawnIntervalRangeBegin, emitterType.spawnIntervalRangeEnd, emitterType.maxParticles, emitterType.ptype);
                 }
+                emitters.push_back(e);
                 break;
             case box:
                 // iterate backwards so we are interacting with the box on top of the other boxes first
@@ -357,6 +387,18 @@ Particle* ofApp::parseParticleType(ParticleType ptype, vec2 emitterPos) {
             p = new SparkParticle(
                 emitterPos,
                 vec2(ofRandom(0.2) - 0.1, ofRandom(-1))
+            );
+            break;
+        case rain:
+            p = new RainParticle(
+                emitterPos,
+                vec2(0.8, 1)
+            );
+            break;
+        case bubble:
+            p = new BubbleParticle(
+                emitterPos,
+                vec2(sin(deltaTime) / 4, ofClamp(cos(deltaTime), -0.01, -1))
             );
             break;
     }

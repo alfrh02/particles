@@ -3,12 +3,11 @@
 #include <vector>
 #include "sceneObject.h"
 #include "particle.h"
-#include "particleConfig.hpp"
 
 class Emitter : public SceneObject {
     public:
+        Emitter(vec2 pos, float spawnIntervalRangeBegin, float spawnIntervalRangeEnd, unsigned short maxParticles, ParticleType ptype);
         Emitter(vec2 pos, float spawnInterval, unsigned short maxParticles, ParticleType ptype);
-        Emitter(vec2 pos, float spawnInterval, float rangeSpawnInterval, unsigned short maxParticles, ParticleType ptype);
 
         void update(double deltaTime) override;
         void drawEditMode() override;
