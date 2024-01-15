@@ -4,7 +4,6 @@ Entity::Entity(vec2 pos, float size, ofColor col) {
     _position = pos;
     _size = size;
 
-    _rotation = 0;
     _direction = vec2(0, 0);
 
     _color = col;
@@ -30,7 +29,6 @@ void Entity::setPosition(vec2 position) {
 
 void Entity::setCaptured(bool captured, int x, int y) {
     _captured = captured;
-    _mouseCoordinates = _position - vec2(x, y);
 }
 
 vec2 Entity::getPosition() {

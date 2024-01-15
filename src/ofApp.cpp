@@ -18,7 +18,6 @@ ofApp::~ofApp(){
 //--------------------------------------------------------------
 void ofApp::setup(){
     // -------- gui setup
-
     gui.setBackgroundColor(COLORS.FOREGROUND);
     gui.setDefaultTextColor(COLORS.BACKGROUND);
     gui.setTextColor(COLORS.BACKGROUND);
@@ -36,26 +35,26 @@ void ofApp::setup(){
     guiMaxParticles.addListener(this, &ofApp::setSelectedMaxParticles);
 
     // -------- emitter presets
-	smokePreset.ptype = smoke;
+	smokePreset.ptype  = smoke;
 
-	firePreset.ptype  = fire;
-    firePreset.spawnIntervalRangeBegin  = 0.1;
-    firePreset.spawnIntervalRangeEnd    = 0.1;
+	firePreset.ptype   = fire;
+    firePreset.spawnIntervalRangeBegin    = 0.1;
+    firePreset.spawnIntervalRangeEnd      = 0.1;
 
-	sparkPreset.ptype = spark;
-    sparkPreset.spawnIntervalRangeBegin = 1;
-    sparkPreset.spawnIntervalRangeEnd   = 3;
+	sparkPreset.ptype  = spark;
+    sparkPreset.spawnIntervalRangeBegin   = 1;
+    sparkPreset.spawnIntervalRangeEnd     = 3;
 
-    rainPreset.ptype  = rain;
-    rainPreset.spawnIntervalRangeBegin  = 0.01;
-    rainPreset.spawnIntervalRangeEnd    = 0.05;
+    rainPreset.ptype   = rain;
+    rainPreset.spawnIntervalRangeBegin    = 0.01;
+    rainPreset.spawnIntervalRangeEnd      = 0.05;
 
-    bubblePreset.ptype  = bubble;
+    bubblePreset.ptype = bubble;
     bubblePreset.spawnIntervalRangeBegin  = 0;
     bubblePreset.spawnIntervalRangeEnd    = 1;
 
     // -------- help text, about text
-    helpText << "       <Particle Simulator>       " << endl;rain
+    helpText << "       <Particle Simulator>       " << endl;
     helpText << "" << endl;
     helpText << "If you are unfamiliar with the    " << endl;
     helpText << "concept of a particle system, view" << endl;

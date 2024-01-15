@@ -25,12 +25,10 @@ class Entity {
     protected:
         vec2 _position;
         vec2 _direction;
-        float _rotation;
         float _size;
         float _speed;
 
         ofColor _color;
 
         bool _captured;
-        vec2 _mouseCoordinates;
 };
